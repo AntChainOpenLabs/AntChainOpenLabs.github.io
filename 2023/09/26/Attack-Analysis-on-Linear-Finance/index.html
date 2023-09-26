@@ -13,11 +13,11 @@
 
     <title>
         
-          Linear Finance 攻击事件分析 - AntChain Open Labs | Blogs
+          Attack Analysis on Linear Finance - AntChain Open Labs | Blogs
         
     </title>
 
-    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/09/25/Linear-Finance-攻击事件分析/">
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/09/26/Attack-Analysis-on-Linear-Finance/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -167,11 +167,11 @@
                           <a class="tag" href="/tags/#Attack Analysis" title="Attack Analysis">Attack Analysis</a>
                         
                     </div>
-                    <h1>Linear Finance 攻击事件分析</h1>
+                    <h1>Attack Analysis on Linear Finance</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by AntChain Open Labs on
-                        2023-09-25
+                        2023-09-26
                     </span>
                 </div>
             </div>
@@ -190,69 +190,67 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>2023年9月22日，资产跨链协议 Linear Finance 发布公告称其在9月21日遭到了攻击。攻击者可以无限铸造 lAAVE，然后在 Linear Exchange 上将 lAAVE 换成 lUSD。该攻击导致 PancakeSwap 和 Ascendex 上所有的 lUSD 流动性被抽干，进而导致 lUSD 的价格跌至零。</p>
+                <p>On September 22, 2023, Linear Finance—a cross-chain asset protocol—reported a malicious attack from the previous day. The attacker managed to mint an unlimited amount of lAAVE and then exchange them for lUSD on the Linear Exchange. This attack resulted in an absolute depletion of lUSD liquidity on PancakeSwap and Ascendex, causing lUSD’s value to plummet to zero. </p>
 <blockquote>
 <p><a href="https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3">https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3</a></p>
 </blockquote>
-<p>本次攻击的关键在于攻击者可以无限铸造 lAAVE 代币。所以接下来我们主要针对 lAAVE 代币无限铸造这个点进行详细的分析。</p>
-<h2 id="无限铸造-lAAVE-代币交易分析"><a href="#无限铸造-lAAVE-代币交易分析" class="headerlink" title="无限铸造 lAAVE 代币交易分析"></a>无限铸造 lAAVE 代币交易分析</h2><h3 id="攻击链路中涉及的主要地址"><a href="#攻击链路中涉及的主要地址" class="headerlink" title="攻击链路中涉及的主要地址"></a>攻击链路中涉及的主要地址</h3><p>攻击者地址：</p>
+<p>The key to this attack lies in the ability of the attacker to mint an unlimited amount of lAAVE tokens. Our main focus here is to delve into the mechanism of the unlimited lAAVE token minting.</p>
+<h2 id="Unlimited-Minting-of-lAAVE-Tokens-A-Closer-Look"><a href="#Unlimited-Minting-of-lAAVE-Tokens-A-Closer-Look" class="headerlink" title="Unlimited Minting of lAAVE Tokens: A Closer Look"></a>Unlimited Minting of lAAVE Tokens: A Closer Look</h2><h3 id="Main-Addresses-Involved-in-The-Attack"><a href="#Main-Addresses-Involved-in-The-Attack" class="headerlink" title="Main Addresses Involved in The Attack"></a>Main Addresses Involved in The Attack</h3><p>Attacker address: </p>
 <blockquote>
 <p>0xBd6111dB894D6cc4Aede0D4429F9D7EA55abD41b</p>
 </blockquote>
-<p>攻击合约地址：</p>
+<p>Attack contract：</p>
 <blockquote>
 <p>0x58a278A80D2150481cEB9877aCE7d95eed6d5578</p>
 </blockquote>
-<p>攻击合约创建者地址：</p>
+<p>Deployer of attack contract：</p>
 <blockquote>
 <p>0xAC70Eba7890B1A4c0416E4e4d1FedD47B1417Fc2</p>
 </blockquote>
-<p>Linear Finance访问控制合约：</p>
+<p>Linear Finance’s access control contract：</p>
 <blockquote>
 <p>0x50bde2dc074c849efc19c554e55f9f1befc7f0bf</p>
 </blockquote>
-<p>Linear Finance访问控制合约的原admin地址：</p>
+<p>The original admin of access control contract：</p>
 <blockquote>
 <p>0x5C9d6aFE82C8f1c33aB274C577932F2D40778347</p>
 </blockquote>
-<p>Linear Finance访问控制合约的新admin地址：</p>
+<p>The new admin of access control contract：</p>
 <blockquote>
 <p>0xc1A4aCafED94E69359361429593433ca5E917DA3</p>
 </blockquote>
-<p>lAAVE 代币合约地址：</p>
+<p>lAAVE token contract：</p>
 <blockquote>
 <p>0x3566c27ccdc102d91728c06f38c9bc907044d796</p>
 </blockquote>
-<p>攻击交易：</p>
+<p>Attack transaction: </p>
 <blockquote>
 <p><a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e</a></p>
 </blockquote>
-<h3 id="攻击时间线梳理"><a href="#攻击时间线梳理" class="headerlink" title="攻击时间线梳理"></a>攻击时间线梳理</h3><p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/01.png" alt="image"></p>
+<h3 id="Timeline-of-The-Attack"><a href="#Timeline-of-The-Attack" class="headerlink" title="Timeline of The Attack"></a>Timeline of The Attack</h3><p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/01.png" alt="image"></p>
 <ol>
-<li><p>9月7日，Linear Finance的访问控制合约的原admin地址0x5C9d6a调用Linear Finance访问控制合约0x50bde2的 <code>SetAdmin</code> 函数，将admin权限转移给了新admin地址0xc1A4aC（<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae">交易详情</a>）。访问控制合约的admin有权调用该合约的 <code>SetIssueAssetRole</code> 函数，赋予指定地址ISSUE_ASSET权限，使其有权增发代币。</p>
-<p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/02.png" alt="image"></p>
+<li><p>On September 7th, the original admin 0x5C9d6a of Linear Finance’s access control contract invoked the <code>SetAdmin</code> function of the access control contract 0x50bde2, transferring the admin role to the new admin address 0xc1A4aC (<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae">detailed transaction</a>). The admin of the access control contract has the authority to call the <code>SetIssueAssetRole</code> function of the contract, granting the specified address the <code>ISSUE_ASSET</code> role, thereby enabling them to mint tokens.</p>
+<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/02.png" alt="image"></p>
 </li>
-<li><p>9月15日，攻击合约创建者0xAC70Eb部署了攻击合约0x58a278（<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f">交易详情</a>）。</p>
+<li><p>On September 15th, the creator of the attack contract, 0xAC70Eb, deployed the attack contract 0x58a278 (<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f">detailed transaction</a>).</p>
 </li>
-<li><p>在9月15日同一天，Linear Finance访问控制合约的新admin——0xc1A4aC调用了访问控制合约的 <code>SetIssueAssetRole</code> 函数，赋予了攻击合约0x58a278 <code>ISSUE_ASSET</code> 权限，使其能够增发代币（<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847">交易详情</a>）。</p>
+<li><p>On the same day, September 15th, the new admin of the Linear Finance’s access control contract, 0xc1A4aC, invoked the <code>SetIssueAssetRole</code> function of the access control contract, granting the attack contract 0x58a278 the <code>ISSUE_ASSET</code> role, allowing it to mint tokens (<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847">detailed transaction</a>).</p>
 </li>
-<li><p>9月21日，攻击者0xBd6111调用攻击合约0x58a278的 <code>mintToken</code> 函数，增发了大量lAAVE代币。通过反汇编查看攻击合约的代码：</p>
+<li><p>On September 21st, the attacker 0xBd6111 called the mintToken function of the attack contract 0x58a278, resulting in a significant amount of lAAVE token mint.<br>By disassembling and examining the code of the attack contract </p>
 <blockquote>
 <p><a href="https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941">https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941</a></p>
 </blockquote>
-<p>我们看到，攻击者在攻击合约中调用了lAAVE代币的 <code>mint</code> 函数进行代币增发，lAAVE代币合约会校验调用者是否具有 <code>ISSUE_ASSET</code> 权限，而在第3步中，访问控制合约的新admin已经赋予了攻击合约 <code>ISSUE_ASSET</code> 权限，因此攻击者得以顺利通过检测，从而成功增发了大量lAAVE代币（<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">交易详情</a>）。</p>
-<p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/03.png" alt="image"><center><i>攻击合约的mintToken函数</i></center></p>
-<p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/04.png" alt="image"></p>
-<center><i>lAAVE代币的mint函数</i></center></li>
+<p> We can see that the attacker invoked the <code>mint</code> function of the lAAVE token contract within the attack contract. The lAAVE token contract verified if the caller has the <code>ISSUE_ASSET</code> role. Since the attack contract has already been granted the <code>ISSUE_ASSET</code> role in the 3rd step, the attacker passed the verification and minted a large amount of lAAVE tokens (<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">detailed transaction</a>).</p>
+<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/03.png" alt="image"><center><i>mintToken function of the attack contract</i></center></p>
+<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/04.png" alt="image"></p>
+<center><i>mint function of lAAVE</i></center></li>
 </ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过复盘整个攻击流程，我们发现，本次攻击的根本原因是地址0x5C9d6a将Linear Finance的访问控制合约0x50bde2的admin权限转移给了地址0xc1A4aC，随后，地址0xAC70Eb部署了攻击合约0x58a278，随后，新的admin地址0xc1A4aC赋予了攻击合约 <code>ISSUE_ASSET</code> 权限，最终攻击者0xBd6111调用了攻击合约0x58a278，增发了大量lAAVE代币。</p>
-<p>通过对攻击链路中涉及的地址进行资金流分析，我们发现，地址0xc1A4aC、0xAC70Eb和0xBd6111的初始资金都来自Tornado.Cash (涉及<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6">交易1</a>， <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6">交易2</a> 和<a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76">交易3</a>）。因此这三个参与者很可能都是由攻击者控制的。</p>
-<p>同时，我们高度怀疑，地址0x5C9d6a（Linear Finance访问控制合约的原admin）的私钥出现了泄漏并被地址0xc1A4aC的持有者获取，最终导致了本次攻击事件的发生。</p>
-<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><ol>
-<li><p><strong>使用多重签名钱包</strong>: 对于项目中的关键权限操作，例如关键权限的转移等，我们建议建议使用多重签名钱包（Multisig Wallets）而不是单一的管理员地址。多重签名钱包提供了额外的安全保护，能够消除因单个私钥泄漏导致的单点故障风险。</p>
-</li>
-<li><p><strong>编写健壮的权限校验代码</strong>：建议项目中的敏感操作，比如代币铸造、代币销毁，做好权限校验，并进行详尽的测试以避免攻击发生。</p>
-</li>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Tracing the entire attack pathway indicates a strategic transfer of permissions. The primary suspect is address 0x5C9d6a, which handed over admin permissions of the Linear Finance’s permission verification contract to address 0xc1A4aC. This set off a sequence of events: the deployment of the malicious contract by 0xAC70Eb and its subsequent exploitation by 0xBd6111, culminating in the massive lAAVE token mint. </p>
+<p>Further investigation of the fund flow across the attack chain revealed that the involved addresses (0xc1A4aC, 0xAC70Eb, and 0xBd6111) all traced back to the Tornado.Cash. Specific transactions highlight this connection (<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6">transaction 1</a>, <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6">transaction 2</a> , and <a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76">transaction 3</a>). Consequently, there’s a strong indication that the trio of addresses implicated in this attack could be under the control of a singular attacker.</p>
+<p>Given these findings, we’re led to believe that the private key associated with address 0x5C9d6a (initial admin for Linear Finance’s permission verification) might have been compromised and possibly acquired by the entity behind 0xc1A4aC. This breach appears to be the root cause of the attack.</p>
+<h2 id="Recommendations"><a href="#Recommendations" class="headerlink" title="Recommendations"></a>Recommendations</h2><ol>
+<li><strong>Embrace Multisig Wallets</strong>: For pivotal permission-based operations in a project, lean on Multisig Wallets over single admin address. It offers an added security layer, ensuring crucial operations get multiple approvals, eliminating single points of failure.</li>
+<li><strong>Robust Permission Checks</strong>: Especially for high-risk operations like token minting and burning, implement rigorous permission checks. Alongside, continually test and validate to prevent unauthorized intrusions.</li>
 </ol>
 
 
@@ -262,10 +260,10 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2023/09/26/Attack-Analysis-on-Linear-Finance/" data-toggle="tooltip" data-placement="top" title="Attack Analysis on Linear Finance">&larr; Previous Post</a>
-                        </li>
                     
+                        <li class="next">
+                            <a href="/2023/09/25/Linear-Finance-攻击事件分析/" data-toggle="tooltip" data-placement="top" title="Linear Finance 攻击事件分析">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
