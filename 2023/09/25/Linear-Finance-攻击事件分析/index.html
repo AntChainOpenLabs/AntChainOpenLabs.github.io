@@ -192,7 +192,7 @@
 
                 <p>2023年9月22日，资产跨链协议 Linear Finance 发布公告称其在9月21日遭到了攻击。攻击者可以无限铸造 lAAVE，然后在 Linear Exchange 上将 lAAVE 换成 lUSD。该攻击导致 PancakeSwap 和 Ascendex 上所有的 lUSD 流动性被抽干，进而导致 lUSD 的价格跌至零。</p>
 <blockquote>
-<p><a href="https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3">https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3</a></p>
+<p><a href="https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3" target="_blank" rel="noopener">https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3</a></p>
 </blockquote>
 <p>本次攻击的关键在于攻击者可以无限铸造 lAAVE 代币。所以接下来我们主要针对 lAAVE 代币无限铸造这个点进行详细的分析。</p>
 <h2 id="无限铸造-lAAVE-代币交易分析"><a href="#无限铸造-lAAVE-代币交易分析" class="headerlink" title="无限铸造 lAAVE 代币交易分析"></a>无限铸造 lAAVE 代币交易分析</h2><h3 id="攻击链路中涉及的主要地址"><a href="#攻击链路中涉及的主要地址" class="headerlink" title="攻击链路中涉及的主要地址"></a>攻击链路中涉及的主要地址</h3><p>攻击者地址：</p>
@@ -225,28 +225,28 @@
 </blockquote>
 <p>攻击交易：</p>
 <blockquote>
-<p><a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e</a></p>
+<p><a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e" target="_blank" rel="noopener">https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e</a></p>
 </blockquote>
 <h3 id="攻击时间线梳理"><a href="#攻击时间线梳理" class="headerlink" title="攻击时间线梳理"></a>攻击时间线梳理</h3><p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/01.png" alt="image"></p>
 <ol>
-<li><p>9月7日，Linear Finance的访问控制合约的原admin地址0x5C9d6a调用Linear Finance访问控制合约0x50bde2的 <code>SetAdmin</code> 函数，将admin权限转移给了新admin地址0xc1A4aC（<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae">交易详情</a>）。访问控制合约的admin有权调用该合约的 <code>SetIssueAssetRole</code> 函数，赋予指定地址ISSUE_ASSET权限，使其有权增发代币。</p>
+<li><p>9月7日，Linear Finance的访问控制合约的原admin地址0x5C9d6a调用Linear Finance访问控制合约0x50bde2的 <code>SetAdmin</code> 函数，将admin权限转移给了新admin地址0xc1A4aC（<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae" target="_blank" rel="noopener">交易详情</a>）。访问控制合约的admin有权调用该合约的 <code>SetIssueAssetRole</code> 函数，赋予指定地址ISSUE_ASSET权限，使其有权增发代币。</p>
 <p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/02.png" alt="image"></p>
 </li>
-<li><p>9月15日，攻击合约创建者0xAC70Eb部署了攻击合约0x58a278（<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f">交易详情</a>）。</p>
+<li><p>9月15日，攻击合约创建者0xAC70Eb部署了攻击合约0x58a278（<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f" target="_blank" rel="noopener">交易详情</a>）。</p>
 </li>
-<li><p>在9月15日同一天，Linear Finance访问控制合约的新admin——0xc1A4aC调用了访问控制合约的 <code>SetIssueAssetRole</code> 函数，赋予了攻击合约0x58a278 <code>ISSUE_ASSET</code> 权限，使其能够增发代币（<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847">交易详情</a>）。</p>
+<li><p>在9月15日同一天，Linear Finance访问控制合约的新admin——0xc1A4aC调用了访问控制合约的 <code>SetIssueAssetRole</code> 函数，赋予了攻击合约0x58a278 <code>ISSUE_ASSET</code> 权限，使其能够增发代币（<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847" target="_blank" rel="noopener">交易详情</a>）。</p>
 </li>
 <li><p>9月21日，攻击者0xBd6111调用攻击合约0x58a278的 <code>mintToken</code> 函数，增发了大量lAAVE代币。通过反汇编查看攻击合约的代码：</p>
 <blockquote>
-<p><a href="https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941">https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941</a></p>
+<p><a href="https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941" target="_blank" rel="noopener">https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941</a></p>
 </blockquote>
-<p>我们看到，攻击者在攻击合约中调用了lAAVE代币的 <code>mint</code> 函数进行代币增发，lAAVE代币合约会校验调用者是否具有 <code>ISSUE_ASSET</code> 权限，而在第3步中，访问控制合约的新admin已经赋予了攻击合约 <code>ISSUE_ASSET</code> 权限，因此攻击者得以顺利通过检测，从而成功增发了大量lAAVE代币（<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">交易详情</a>）。</p>
+<p>我们看到，攻击者在攻击合约中调用了lAAVE代币的 <code>mint</code> 函数进行代币增发，lAAVE代币合约会校验调用者是否具有 <code>ISSUE_ASSET</code> 权限，而在第3步中，访问控制合约的新admin已经赋予了攻击合约 <code>ISSUE_ASSET</code> 权限，因此攻击者得以顺利通过检测，从而成功增发了大量lAAVE代币（<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e" target="_blank" rel="noopener">交易详情</a>）。</p>
 <p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/03.png" alt="image"><center><i>攻击合约的mintToken函数</i></center></p>
 <p><img src="/2023/09/25/Linear-Finance-%E6%94%BB%E5%87%BB%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/04.png" alt="image"></p>
 <center><i>lAAVE代币的mint函数</i></center></li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过复盘整个攻击流程，我们发现，本次攻击的根本原因是地址0x5C9d6a将Linear Finance的访问控制合约0x50bde2的admin权限转移给了地址0xc1A4aC，随后，地址0xAC70Eb部署了攻击合约0x58a278，随后，新的admin地址0xc1A4aC赋予了攻击合约 <code>ISSUE_ASSET</code> 权限，最终攻击者0xBd6111调用了攻击合约0x58a278，增发了大量lAAVE代币。</p>
-<p>通过对攻击链路中涉及的地址进行资金流分析，我们发现，地址0xc1A4aC、0xAC70Eb和0xBd6111的初始资金都来自Tornado.Cash (涉及<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6">交易1</a>， <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6">交易2</a> 和<a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76">交易3</a>）。因此这三个参与者很可能都是由攻击者控制的。</p>
+<p>通过对攻击链路中涉及的地址进行资金流分析，我们发现，地址0xc1A4aC、0xAC70Eb和0xBd6111的初始资金都来自Tornado.Cash (涉及<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6" target="_blank" rel="noopener">交易1</a>， <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6" target="_blank" rel="noopener">交易2</a> 和<a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76" target="_blank" rel="noopener">交易3</a>）。因此这三个参与者很可能都是由攻击者控制的。</p>
 <p>同时，我们高度怀疑，地址0x5C9d6a（Linear Finance访问控制合约的原admin）的私钥出现了泄漏并被地址0xc1A4aC的持有者获取，最终导致了本次攻击事件的发生。</p>
 <h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><ol>
 <li><p><strong>使用多重签名钱包</strong>: 对于项目中的关键权限操作，例如关键权限的转移等，我们建议建议使用多重签名钱包（Multisig Wallets）而不是单一的管理员地址。多重签名钱包提供了额外的安全保护，能够消除因单个私钥泄漏导致的单点故障风险。</p>
@@ -266,6 +266,10 @@
                             <a href="/2023/09/26/Attack-Analysis-on-Linear-Finance/" data-toggle="tooltip" data-placement="top" title="Attack Analysis on Linear Finance">&larr; Previous Post</a>
                         </li>
                     
+                    
+                        <li class="next">
+                            <a href="/2023/09/22/从模块化看Web3基础设施/" data-toggle="tooltip" data-placement="top" title="从模块化看Web3基础设施">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 

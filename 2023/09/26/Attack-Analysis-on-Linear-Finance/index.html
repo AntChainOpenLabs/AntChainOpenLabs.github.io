@@ -192,7 +192,7 @@
 
                 <p>On September 22, 2023, Linear Finance—a cross-chain asset protocol—reported a malicious attack from the previous day. The attacker managed to mint an unlimited amount of lAAVE and then exchange them for lUSD on the Linear Exchange. This attack resulted in an absolute depletion of lUSD liquidity on PancakeSwap and Ascendex, causing lUSD’s value to plummet to zero. </p>
 <blockquote>
-<p><a href="https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3">https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3</a></p>
+<p><a href="https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3" target="_blank" rel="noopener">https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3</a></p>
 </blockquote>
 <p>The key to this attack lies in the ability of the attacker to mint an unlimited amount of lAAVE tokens. Our main focus here is to delve into the mechanism of the unlimited lAAVE token minting.</p>
 <h2 id="Unlimited-Minting-of-lAAVE-Tokens-A-Closer-Look"><a href="#Unlimited-Minting-of-lAAVE-Tokens-A-Closer-Look" class="headerlink" title="Unlimited Minting of lAAVE Tokens: A Closer Look"></a>Unlimited Minting of lAAVE Tokens: A Closer Look</h2><h3 id="Main-Addresses-Involved-in-The-Attack"><a href="#Main-Addresses-Involved-in-The-Attack" class="headerlink" title="Main Addresses Involved in The Attack"></a>Main Addresses Involved in The Attack</h3><p>Attacker address: </p>
@@ -225,28 +225,30 @@
 </blockquote>
 <p>Attack transaction: </p>
 <blockquote>
-<p><a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e</a></p>
+<p><a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e" target="_blank" rel="noopener">https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e</a></p>
 </blockquote>
 <h3 id="Timeline-of-The-Attack"><a href="#Timeline-of-The-Attack" class="headerlink" title="Timeline of The Attack"></a>Timeline of The Attack</h3><p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/01.png" alt="image"></p>
 <ol>
-<li><p>On September 7th, the original admin 0x5C9d6a of Linear Finance’s access control contract invoked the <code>SetAdmin</code> function of the access control contract 0x50bde2, transferring the admin role to the new admin address 0xc1A4aC (<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae">detailed transaction</a>). The admin of the access control contract has the authority to call the <code>SetIssueAssetRole</code> function of the contract, granting the specified address the <code>ISSUE_ASSET</code> role, thereby enabling them to mint tokens.</p>
+<li><p>On September 7th, the original admin 0x5C9d6a of Linear Finance’s access control contract invoked the <code>SetAdmin</code> function of the access control contract 0x50bde2, transferring the admin role to the new admin address 0xc1A4aC (<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae" target="_blank" rel="noopener">detailed transaction</a>). The admin of the access control contract has the authority to call the <code>SetIssueAssetRole</code> function of the contract, granting the specified address the <code>ISSUE_ASSET</code> role, thereby enabling them to mint tokens.</p>
 <p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/02.png" alt="image"></p>
 </li>
-<li><p>On September 15th, the creator of the attack contract, 0xAC70Eb, deployed the attack contract 0x58a278 (<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f">detailed transaction</a>).</p>
+<li><p>On September 15th, the creator of the attack contract, 0xAC70Eb, deployed the attack contract 0x58a278 (<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f" target="_blank" rel="noopener">detailed transaction</a>).</p>
 </li>
-<li><p>On the same day, September 15th, the new admin of the Linear Finance’s access control contract, 0xc1A4aC, invoked the <code>SetIssueAssetRole</code> function of the access control contract, granting the attack contract 0x58a278 the <code>ISSUE_ASSET</code> role, allowing it to mint tokens (<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847">detailed transaction</a>).</p>
+<li><p>On the same day, September 15th, the new admin of the Linear Finance’s access control contract, 0xc1A4aC, invoked the <code>SetIssueAssetRole</code> function of the access control contract, granting the attack contract 0x58a278 the <code>ISSUE_ASSET</code> role, allowing it to mint tokens (<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847" target="_blank" rel="noopener">detailed transaction</a>).</p>
 </li>
 <li><p>On September 21st, the attacker 0xBd6111 called the mintToken function of the attack contract 0x58a278, resulting in a significant amount of lAAVE token mint.<br>By disassembling and examining the code of the attack contract </p>
 <blockquote>
-<p><a href="https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941">https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941</a></p>
+<p><a href="https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941" target="_blank" rel="noopener">https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941</a></p>
 </blockquote>
-<p> We can see that the attacker invoked the <code>mint</code> function of the lAAVE token contract within the attack contract. The lAAVE token contract verified if the caller has the <code>ISSUE_ASSET</code> role. Since the attack contract has already been granted the <code>ISSUE_ASSET</code> role in the 3rd step, the attacker passed the verification and minted a large amount of lAAVE tokens (<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e">detailed transaction</a>).</p>
-<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/03.png" alt="image"><center><i>mintToken function of the attack contract</i></center></p>
+<p> We can see that the attacker invoked the <code>mint</code> function of the lAAVE token contract within the attack contract. The lAAVE token contract verified if the caller has the <code>ISSUE_ASSET</code> role. Since the attack contract has already been granted the <code>ISSUE_ASSET</code> role in the 3rd step, the attacker passed the verification and minted a large amount of lAAVE tokens (<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e" target="_blank" rel="noopener">detailed transaction</a>).</p>
+<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/03.png" alt="hello a title" title="antoher"></p>
+<center><i>mintToken function of the attack contract</i></center>
+
 <p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/04.png" alt="image"></p>
 <center><i>mint function of lAAVE</i></center></li>
 </ol>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Tracing the entire attack pathway indicates a strategic transfer of permissions. The primary suspect is address 0x5C9d6a, which handed over admin permissions of the Linear Finance’s permission verification contract to address 0xc1A4aC. This set off a sequence of events: the deployment of the malicious contract by 0xAC70Eb and its subsequent exploitation by 0xBd6111, culminating in the massive lAAVE token mint. </p>
-<p>Further investigation of the fund flow across the attack chain revealed that the involved addresses (0xc1A4aC, 0xAC70Eb, and 0xBd6111) all traced back to the Tornado.Cash. Specific transactions highlight this connection (<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6">transaction 1</a>, <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6">transaction 2</a> , and <a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76">transaction 3</a>). Consequently, there’s a strong indication that the trio of addresses implicated in this attack could be under the control of a singular attacker.</p>
+<p>Further investigation of the fund flow across the attack chain revealed that the involved addresses (0xc1A4aC, 0xAC70Eb, and 0xBd6111) all traced back to the Tornado.Cash. Specific transactions highlight this connection (<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6" target="_blank" rel="noopener">transaction 1</a>, <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6" target="_blank" rel="noopener">transaction 2</a> , and <a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76" target="_blank" rel="noopener">transaction 3</a>). Consequently, there’s a strong indication that the trio of addresses implicated in this attack could be under the control of a singular attacker.</p>
 <p>Given these findings, we’re led to believe that the private key associated with address 0x5C9d6a (initial admin for Linear Finance’s permission verification) might have been compromised and possibly acquired by the entity behind 0xc1A4aC. This breach appears to be the root cause of the attack.</p>
 <h2 id="Recommendations"><a href="#Recommendations" class="headerlink" title="Recommendations"></a>Recommendations</h2><ol>
 <li><strong>Embrace Multisig Wallets</strong>: For pivotal permission-based operations in a project, lean on Multisig Wallets over single admin address. It offers an added security layer, ensuring crucial operations get multiple approvals, eliminating single points of failure.</li>
@@ -259,6 +261,10 @@
                 
 
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/" data-toggle="tooltip" data-placement="top" title="The Anatomy of a Crypto Heist: Dissecting The Attack on Stars Arena">&larr; Previous Post</a>
+                        </li>
                     
                     
                         <li class="next">
