@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.png">
+
+    <title>
+        
+          The Anatomy of a Crypto Heist: Dissecting The Attack on Stars Arena - AntChain Open Labs | Blogs
+        
+    </title>
+
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://openlabs-intl.antdigital.com/home">AntChain Open Labs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Attack Analysis" title="Attack Analysis">Attack Analysis</a>
+                        
+                    </div>
+                    <h1>The Anatomy of a Crypto Heist: Dissecting The Attack on Stars Arena</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by AntChain Open Labs on
+                        2023-10-09
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>On October 7, 2023, the SocialFi application, Stars Arena was attacked. They announced on Twitter that the funds in the contract were drained by the attacker, resulting in a loss of approximately 2.9 million USD (<a href="https://twitter.com/starsarenacom/status/1710604987812708531" target="_blank" rel="noopener">https://twitter.com/starsarenacom/status/1710604987812708531</a>).</p>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/01.png" alt="image"></p>
+<p>A few hours later, Stars Arena tweeted that they have obtained funds to compensate for the losses caused by the vulnerability and invited white hat development teams to quickly review the platform’s security. The new contract will be relaunched after a comprehensive security audit (<a href="https://twitter.com/starsarenacom/status/1710666706262138953" target="_blank" rel="noopener">https://twitter.com/starsarenacom/status/1710666706262138953</a>).</p>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/02.png" alt="image"></p>
+<p>The essence of this attack lies in the presence of a reentrancy vulnerability in the project’s contract, allowing the attacker to steal a significant amount of AVAX tokens from the contract of the project. Below, we will provide a detailed analysis of the attack path.</p>
+<h2 id="Attack-analysis"><a href="#Attack-analysis" class="headerlink" title="Attack analysis"></a>Attack analysis</h2><h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p><strong>About Stars Arena</strong><br>Stars Arena is a SocialFi project similar to Friend.Tech, deployed on the Avalanche blockchain. On Stars Arena, users can log in with their own crypto wallets and directly purchase shares of accounts belonging to creators they are interested in. These shares can be likened to tickets or stocks issued by creators. By holding shares of a creator, users gain access to the exclusive groups established by the creators. Users can also create their own shares for others to purchase.<br>One of the reasons why SocialFi projects like Stars Arena have gained popularity is that the shares are tradable, and the value of these shares may appreciate over time. In other words, users have the opportunity to make profits by trading shares. Additionally, Stars Arena has received strong support from the Avalanche official team and its founder, Emin Gün Sirer. Both the official Avalanche account and Emin Gün Sirer himself have joined Stars Arena. Before the attack took place, the Total Value Locked (TVL) in the project was close to $3 million.</p>
+<p><strong>Profit sharing mechanism</strong><br>In Stars Arena, a 10% transaction fee is charged for buying and selling shares. Out of this, 7% is allocated as the subject fee to creators, 2% is allocated as the protocol fee to the platform, and 1% is allocated as the referral fee to the referrer. However, during our decompilation and analysis of the project contract, we discovered that the referrer’s address can be left unset during the buying and selling process, in which case the referral fee will also be transferred to the platform.</p>
+<h3 id="Key-Addresses-Involved-in-the-Attack"><a href="#Key-Addresses-Involved-in-the-Attack" class="headerlink" title="Key Addresses Involved in the Attack"></a>Key Addresses Involved in the Attack</h3><p>Attacker’s Address：</p>
+<blockquote>
+<p>0xa2ebf3fcd757e9be1e58b643b6b5077d11b4ad7a</p>
+</blockquote>
+<p>Attack Contract：</p>
+<blockquote>
+<p>0xdd9afc0e3c43951659c8ebe7aef9ee40879863ea</p>
+</blockquote>
+<p>Proxy Contract of Stars Arena：</p>
+<blockquote>
+<p>0xa481b139a1a654ca19d2074f174f17d7534e8cec</p>
+</blockquote>
+<p>Implementation Contract of Stars Arena (Vulnerable)：</p>
+<blockquote>
+<p>0x8af92c23a169b58c2e5ac656d8d8a23fc725080f</p>
+</blockquote>
+<h3 id="Analysis-of-Attack-Process"><a href="#Analysis-of-Attack-Process" class="headerlink" title="Analysis of Attack Process"></a>Analysis of Attack Process</h3><p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/03.png" alt="image"><center><i>Attack Process</i></center></p>
+<p>（<a href="https://explorer.phalcon.xyz/tx/avax/0x4f37ffecdad598f53b8d5a2d9df98e3c00fbda4328585eb9947a412b5fe17ac5" target="_blank" rel="noopener">https://explorer.phalcon.xyz/tx/avax/0x4f37ffecdad598f53b8d5a2d9df98e3c00fbda4328585eb9947a412b5fe17ac5</a>）<br>Based on the decompilation of the Stars Arena contract and analysis of the attack transaction (<a href="https://snowtrace.io/tx/0x4f37ffecdad598f53b8d5a2d9df98e3c00fbda4328585eb9947a412b5fe17ac5" target="_blank" rel="noopener">https://snowtrace.io/tx/0x4f37ffecdad598f53b8d5a2d9df98e3c00fbda4328585eb9947a412b5fe17ac5</a>), we have outlined the process and principles of this attack. The attack process can be divided into three main stages: attack preparation, reentrancy, and profiting, following a timeline. Detailed Analysis of Attack Process is as follows:</p>
+<h4 id="Attack-Preparation"><a href="#Attack-Preparation" class="headerlink" title="Attack Preparation"></a>Attack Preparation</h4><ol>
+<li>The attacker deployed the attack contract at the address 0xdd9afc.</li>
+<li>The attacker purchased shares.</li>
+</ol>
+<p>The attacker bought shares by invoking a function with the signature <code>0xe9ccf3a3</code> in the vulnerable contract of Stars Arena. Through decompilation, we have discovered that this function serves a similar purpose to buyShares in Stars Arena, as it is used to purchase shares for a specified address. The difference is that <code>0xe9ccf3a3</code> allows the setting of a referrer. The three parameters of the <code>0xe9ccf3a3</code> function represent the creator, the desired amount of shares to purchase and the referral address, respectively. The actual parameters passed by the attacker were the address of the attack contract <code>0xdd9afc</code>, the desired amount of shares to purchase, and the address of the attack contract <code>0xdd9afc</code> as the referral address. The workflow analysis is as follows:</p>
+<ul>
+<li>In the function <code>0xe9ccf3a3</code>, the attacker passed the non-zero <code>varg2</code> as the address of the attack contract. Therefore, it entered the function <code>0x326c</code> to set the referrer (line 4 in Figure. 1). It passed the address of the attack contract and the caller’s address (i.e., the address of the attack contract) to the function <code>0x326c</code>.</li>
+</ul>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/0xe9ccf3a3.png" alt="image"><center><i>Figure. 1. Decompiled Function 0xe9ccf3a3</i></center></p>
+<ul>
+<li>In the function <code>0x326c</code> (Figure. 2), <code>varg0</code> corresponds to the referral address, and <code>varg1</code> corresponds to the caller (the referred address). In Figure 2, the state variable <code>owner_a2</code> is used to track the mapping between the referrer and the referred address. Firstly, in lines 2-3, the code checks if there is no existing referrer for the address of the attack contract. If there is no referrer, then in line 4, it checks if the referrer and the referred address are the same. Since both the referrer and the referred address were the address of the attack contract, <code>v0</code> was set to 0. As a result, the condition in line 6 evaluated to true, and the code directly returned in line 7, bypassing the code in line 10 that would assign the referrer to the <code>owner_a2</code> state variable. In summary, the setting of the referrer failed.</li>
+</ul>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/0x326c.png" alt="image"><center><i>Figure. 2. Decompiled Function 0x326c</i></center></p>
+<ul>
+<li>After the execution of the <code>0x326c</code> function, the execution flow returned to line 6 of the function <code>0xe9ccf3a3</code>, where the function <code>0x2058</code> was called to execute the specific share purchase logic. The parameters passed to the function <code>0x2058</code> are the amount of shares to purchase (1 AVAX) and the address of the creator (the address of the attack contract).</li>
+<li>In the private function <code>0x2058</code>，<ul>
+<li>In the 2nd line, the <code>0x1a9b</code> function is called to calculate the value of the shares (<code>v0</code>).</li>
+<li>In the 3rd, 4th, and 5th lines, the function calculates the <code>protocolFee</code> (fee transferred to the platform), <code>subjectFee</code> (fee transferred to the creator), and <code>referralFee</code> (fee transferred to the referrer) that the buyer needs to pay.</li>
+<li>In line 6, the <code>protocolFee</code> (0.00012 AVAX) is transferred to the platform address.</li>
+<li>In line 7, the <code>subjectFee</code> (0.00042 AVAX) is transferred to the creator (the attack contract). This triggered the fallback function of the attack contract. <strong>In the fallback function, the attacker re-entered the <code>0x5632b2e4</code> function of the Stars Arena’s vulnerable contract (without a reentrancy lock) to modify the weight coefficient (details will be explained later).</strong></li>
+<li>In line 14, a refund operation is performed. After deducting the fees for the purchased shares, <code>subjectFee</code>, <code>protocolFee</code>, and <code>referralFee</code>, any excess AVAX will be returned to the sender of the transaction.</li>
+<li>In line 17, the <code>0x2f7b</code> (shown in Figure. 4) is called, passing the parameters referralFee and the caller’s address (i.e., the address of the attack contract). In Figure 4, in the 2nd line, the code retrieves the referrer of the caller from the <code>owner_a2</code> state variable. As mentioned before, the setting of the referrer failed, so <code>v0</code> was set to 0 in this case. Therefore, it proceeded to the 5th line and transfers the <code>referralFee</code> (0.00006 AVAX) to the platform.</li>
+<li>In line 21 of Figure 3, an accounting operation is performed, indicating that the shares have been issued.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/0x2058.png" alt="image"><center><i>Figure. 3. Decompiled Function 0x2058</i></center></p>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/0x2f7b.png" alt="image"><center><i>Figure. 4. Decompiled Function 0x2f7b</i></center></p>
+<h4 id="Reentrancy-and-Modification-of-Weight-Coefficients"><a href="#Reentrancy-and-Modification-of-Weight-Coefficients" class="headerlink" title="Reentrancy and Modification of Weight Coefficients"></a>Reentrancy and Modification of Weight Coefficients</h4><p>In line 7 of function <code>0x2058</code> in Figure. 3, during the process of transferring <code>subjectFee</code> (0.00042 AVAX) to the creator (attacker contract), the fallback function of the attack contract was triggered. Due to the lack of reentrancy protection in the <code>0x5632b2e4</code> function of the Stars Arena vulnerable contract, the attacker was able to reenter the <code>0x5632b2e4</code> function in the fallback function and modify the weight coefficients, enabling them to obtain a large amount of AVAX when selling shares in the future. The attacker called the <code>0x5632b2e4</code> function with all four parameters set to 91000000000. A detailed process analysis is as follows:</p>
+<ul>
+<li>In line 3 of Figure. 5, the function <code>0x5632b2e4</code> first checks whether the shares have been issued. However, since the attacker has reentered this function, the code used for accounting in line 21 of Figure. 3 has not been executed yet. As a result, the shares purchased by the attacker are still considered to be in the “unissued” state, allowing the attacker to pass this check.</li>
+<li>In lines 4 to 6, the function checked the legality of the passed weight coefficients.</li>
+<li>In lines 7 to 9, the function set the three weight coefficients to the parameters passed by the attacker.</li>
+</ul>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/0x5632b2e4.png" alt="image"><center><i>Figure. 5. Decompiled Function 0x5632b2e4</i></center></p>
+<h4 id="Sell-Shares-and-Get-Large-Profits"><a href="#Sell-Shares-and-Get-Large-Profits" class="headerlink" title="Sell Shares and Get Large Profits"></a>Sell Shares and Get Large Profits</h4><p>After the reentrancy attack, the weight coefficients have been modified by the attacker to 91000000000. At this point, the attacker calls the sellShares function of the Stars Arena vulnerable contract in the attack contract. After selling shares, the attacker obtained 266103.97278 AVAX. The parameters passed to the sellShares function by the attack contract are as follows: the attack contract address and the amount of shares (1 AVAX). The detailed analysis process is as follows:</p>
+<ul>
+<li>In line 3 of Figure. 6, the function <code>0x1a9b</code> is called to calculate the value of the shares, <code>v1</code>. This value has an approximately linear relationship with the weight coefficients set by the attacker. Therefore, the calculated value <code>v1</code> is very large, exceeding 260,000 AVAX.</li>
+<li>In lines 4, 5, and 6, the function calculates the <code>protocolFee</code> (fee paid to the platform), <code>subjectFee</code> (fee paid to the creator), and <code>referralFee</code> (fee paid to the referrer) respectively for selling the shares.</li>
+<li>In lines 8 to 10, the function calculates the amount of AVAX that should be transferred to the seller after deducting the transaction fees.</li>
+<li>In line 11, the internal function <code>0x30ef</code> is called to transfer 246899.6712 AVAX (calculated in line 10) to the seller (i.e., the attack contract).</li>
+<li>In line 12, the <code>protocolFee</code> (5486.65936 AVAX) is transferred to the platform address.</li>
+<li>In line 13, the <code>subjectFee</code> (19203.30776 AVAX) is transferred to the creator (attack contract).</li>
+<li>In line 15, the function <code>0x2f7b</code> in Figure. 4 is called with parameters <code>referralFee</code> and the caller’s address (i.e., attack contract address). In Figure. 4, the referrer of the caller from the state variable <code>owner_a2</code> was retrieved in line 2. As mentioned earlier, the referrer was not set successfully, so <code>v0</code> is 0 in this case. Therefore, it proceeded to line 5, where the <code>referralFee</code> (2743.32968 AVAX) is transferred to the platform.</li>
+</ul>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/sellShares.png" alt="image"><center><i>Figure. 6. Decompiled Function sellShares</i></center></p>
+<h2 id="Stolen-Funds-Tracing"><a href="#Stolen-Funds-Tracing" class="headerlink" title="Stolen Funds Tracing"></a>Stolen Funds Tracing</h2><p>Attacker’s address:</p>
+<blockquote>
+<p>0xa2ebf3fcd757e9be1e58b643b6b5077d11b4ad7a</p>
+</blockquote>
+<p>Attacker’s money laundering transaction:</p>
+<blockquote>
+<p><a href="https://snowtrace.io/tx/0x8f5b2e8869260d6854ce4c93f58dfcbf6e8fb18b96c3e76db1eeb6dce0ef9fb1" target="_blank" rel="noopener">https://snowtrace.io/tx/0x8f5b2e8869260d6854ce4c93f58dfcbf6e8fb18b96c3e76db1eeb6dce0ef9fb1</a></p>
+</blockquote>
+<p>Attacker created contract 0xef606558483954e5ab40429210da3429d3d12978 to perform coin mixing operations, distributing the stolen 266,000 AVAX tokens evenly among 266 addresses, with each address receiving 1,000 AVAX. Currently, the 1,000 AVAX remains in these 266 addresses without any further activity.</p>
+<p><img src="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/08.png" alt="image"></p>
+<h2 id="Recommendations"><a href="#Recommendations" class="headerlink" title="Recommendations"></a>Recommendations</h2><ol>
+<li>During the contract development process, it is important to use reentrancy guards correctly and follow the “Transfer after Effect” pattern. This helps mitigate the risk of reentrancy attacks.</li>
+<li>Prior to project deployment, it is strongly recommended to engage professional smart contract security experts for a thorough security audit.</li>
+<li>We recommend that project teams release their source code to facilitate user understanding of contract security. Additionally, implementing a bug bounty program can incentivize the security community to help identify and address contract risks. It has been proven that closed-source contracts do not necessarily enhance project security; in fact, they can be detrimental.</li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2023/10/09/Stars-Arena-攻击事件分析/" data-toggle="tooltip" data-placement="top" title="Stars Arena 攻击事件分析">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2023/09/26/Attack-Analysis-on-Linear-Finance/" data-toggle="tooltip" data-placement="top" title="Attack Analysis on Linear Finance">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/AntChainOpenLabs">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; AntChain Open Labs 2023 
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://antchainopenlabs.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
