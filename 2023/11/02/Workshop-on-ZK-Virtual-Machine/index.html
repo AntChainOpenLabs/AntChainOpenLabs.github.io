@@ -13,11 +13,11 @@
 
     <title>
         
-          Attack Analysis on Linear Finance - AntChain Open Labs | Blogs
+          Workshop on ZK-Virtual Machine - AntChain Open Labs | Blogs
         
     </title>
 
-    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/09/26/Attack-Analysis-on-Linear-Finance/">
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/11/02/Workshop-on-ZK-Virtual-Machine/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -164,14 +164,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Attack Analysis" title="Attack Analysis">Attack Analysis</a>
+                          <a class="tag" href="/tags/#Workshop" title="Workshop">Workshop</a>
                         
                     </div>
-                    <h1>Attack Analysis on Linear Finance</h1>
+                    <h1>Workshop on ZK-Virtual Machine</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by AntChain Open Labs on
-                        2023-09-26
+                        2023-11-02
                     </span>
                 </div>
             </div>
@@ -190,70 +190,76 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>On September 22, 2023, Linear Finance—a cross-chain asset protocol—reported a malicious attack from the previous day. The attacker managed to mint an unlimited amount of lAAVE and then exchange them for lUSD on the Linear Exchange. This attack resulted in an absolute depletion of lUSD liquidity on PancakeSwap and Ascendex, causing lUSD’s value to plummet to zero. </p>
-<blockquote>
-<p><a href="https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3" target="_blank" rel="noopener">https://medium.com/linear-finance/%E2%84%93usd-exploit-283f2d32a2f3</a></p>
-</blockquote>
-<p>The key to this attack lies in the ability of the attacker to mint an unlimited amount of lAAVE tokens. Our main focus here is to delve into the mechanism of the unlimited lAAVE token minting.</p>
-<h2 id="Unlimited-Minting-of-lAAVE-Tokens-A-Closer-Look"><a href="#Unlimited-Minting-of-lAAVE-Tokens-A-Closer-Look" class="headerlink" title="Unlimited Minting of lAAVE Tokens: A Closer Look"></a>Unlimited Minting of lAAVE Tokens: A Closer Look</h2><h3 id="Main-Addresses-Involved-in-The-Attack"><a href="#Main-Addresses-Involved-in-The-Attack" class="headerlink" title="Main Addresses Involved in The Attack"></a>Main Addresses Involved in The Attack</h3><p>Attacker address: </p>
-<blockquote>
-<p>0xBd6111dB894D6cc4Aede0D4429F9D7EA55abD41b</p>
-</blockquote>
-<p>Attack contract：</p>
-<blockquote>
-<p>0x58a278A80D2150481cEB9877aCE7d95eed6d5578</p>
-</blockquote>
-<p>Deployer of attack contract：</p>
-<blockquote>
-<p>0xAC70Eba7890B1A4c0416E4e4d1FedD47B1417Fc2</p>
-</blockquote>
-<p>Linear Finance’s access control contract：</p>
-<blockquote>
-<p>0x50bde2dc074c849efc19c554e55f9f1befc7f0bf</p>
-</blockquote>
-<p>The original admin of access control contract：</p>
-<blockquote>
-<p>0x5C9d6aFE82C8f1c33aB274C577932F2D40778347</p>
-</blockquote>
-<p>The new admin of access control contract：</p>
-<blockquote>
-<p>0xc1A4aCafED94E69359361429593433ca5E917DA3</p>
-</blockquote>
-<p>lAAVE token contract：</p>
-<blockquote>
-<p>0x3566c27ccdc102d91728c06f38c9bc907044d796</p>
-</blockquote>
-<p>Attack transaction: </p>
-<blockquote>
-<p><a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e" target="_blank" rel="noopener">https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e</a></p>
-</blockquote>
-<h3 id="Timeline-of-The-Attack"><a href="#Timeline-of-The-Attack" class="headerlink" title="Timeline of The Attack"></a>Timeline of The Attack</h3><p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/01.png" alt="image"></p>
-<ol>
-<li><p>On September 7th, the original admin 0x5C9d6a of Linear Finance’s access control contract invoked the <code>SetAdmin</code> function of the access control contract 0x50bde2, transferring the admin role to the new admin address 0xc1A4aC (<a href="https://bscscan.com/tx/0xd985f533b0393abe672facaa2e64a16df12dd2e829d93795e1905d94c1395cae" target="_blank" rel="noopener">detailed transaction</a>). The admin of the access control contract has the authority to call the <code>SetIssueAssetRole</code> function of the contract, granting the specified address the <code>ISSUE_ASSET</code> role, thereby enabling them to mint tokens.</p>
-<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/02.png" alt="image"></p>
-</li>
-<li><p>On September 15th, the creator of the attack contract, 0xAC70Eb, deployed the attack contract 0x58a278 (<a href="https://bscscan.com/tx/0xcc5d837340b71bef4197631dde40a53aa5026df677f49651e5708b0584a12e4f" target="_blank" rel="noopener">detailed transaction</a>).</p>
-</li>
-<li><p>On the same day, September 15th, the new admin of the Linear Finance’s access control contract, 0xc1A4aC, invoked the <code>SetIssueAssetRole</code> function of the access control contract, granting the attack contract 0x58a278 the <code>ISSUE_ASSET</code> role, allowing it to mint tokens (<a href="https://bscscan.com/tx/0x5a4dbca85cd2b523e83b9fd4d913b6e904e40c3e12e1213f0f34b3a2a2826847" target="_blank" rel="noopener">detailed transaction</a>).</p>
-</li>
-<li><p>On September 21st, the attacker 0xBd6111 called the mintToken function of the attack contract 0x58a278, resulting in a significant amount of lAAVE token mint.<br>By disassembling and examining the code of the attack contract </p>
-<blockquote>
-<p><a href="https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941" target="_blank" rel="noopener">https://library.dedaub.com/decompile?md5=63283effc0a281ce6e55249ca3bfc941</a></p>
-</blockquote>
-<p> We can see that the attacker invoked the <code>mint</code> function of the lAAVE token contract within the attack contract. The lAAVE token contract verified if the caller has the <code>ISSUE_ASSET</code> role. Since the attack contract has already been granted the <code>ISSUE_ASSET</code> role in the 3rd step, the attacker passed the verification and minted a large amount of lAAVE tokens (<a href="https://bscscan.com/tx/0xb9eac27439da28edad2560c81b6ddb331b33861a78a508ea6e7479d963fe280e" target="_blank" rel="noopener">detailed transaction</a>).</p>
-<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/03.png" alt="hello a title" title="antoher"></p>
-<center><i>mintToken function of the attack contract</i></center>
+                <div style="text-align:right;">
 
-<p><img src="/2023/09/26/Attack-Analysis-on-Linear-Finance/04.png" alt="image"></p>
-<center><i>mint function of lAAVE</i></center></li>
-</ol>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Tracing the entire attack pathway indicates a strategic transfer of permissions. The primary suspect is address 0x5C9d6a, which handed over admin permissions of the Linear Finance’s permission verification contract to address 0xc1A4aC. This set off a sequence of events: the deployment of the malicious contract by 0xAC70Eb and its subsequent exploitation by 0xBd6111, culminating in the massive lAAVE token mint. </p>
-<p>Further investigation of the fund flow across the attack chain revealed that the involved addresses (0xc1A4aC, 0xAC70Eb, and 0xBd6111) all traced back to the Tornado.Cash. Specific transactions highlight this connection (<a href="https://bscscan.com/tx/0x27a086bd52c686732c0760ee52c5b8241a30eea809a75d75fe370541a851d5e6" target="_blank" rel="noopener">transaction 1</a>, <a href="https://bscscan.com/tx/0xeedf4025fb612110826f80c3b10102949692ee432eebae74d004b627444d0ae6" target="_blank" rel="noopener">transaction 2</a> , and <a href="https://bscscan.com/tx/0xb56dfb41ff9c69d958a9ccc425418e1350dc46f850a613846318e49f45688b76" target="_blank" rel="noopener">transaction 3</a>). Consequently, there’s a strong indication that the trio of addresses implicated in this attack could be under the control of a singular attacker.</p>
-<p>Given these findings, we’re led to believe that the private key associated with address 0x5C9d6a (initial admin for Linear Finance’s permission verification) might have been compromised and possibly acquired by the entity behind 0xc1A4aC. This breach appears to be the root cause of the attack.</p>
-<h2 id="Recommendations"><a href="#Recommendations" class="headerlink" title="Recommendations"></a>Recommendations</h2><ol>
-<li><strong>Embrace Multisig Wallets</strong>: For pivotal permission-based operations in a project, lean on Multisig Wallets over single admin address. It offers an added security layer, ensuring crucial operations get multiple approvals, eliminating single points of failure.</li>
-<li><strong>Robust Permission Checks</strong>: Especially for high-risk operations like token minting and burning, implement rigorous permission checks. Alongside, continually test and validate to prevent unauthorized intrusions.</li>
-</ol>
+<p><strong>Hosted by AntChain Open Labs</strong><br><strong>November 10, 2023，09:30 - 12:00 (GMT+8)</strong><br><strong>Venue: Teleconference (invitation only)</strong></p>
+</div>
+
+<p>Thanks for all the responses to our Call for Presentations. Due to the time constraints, we can only accommodate a limited number of talks in the final agenda.We’ll send out invitation to all potential speakers and priotize your talk in the following events. </p>
+<p>Please contact us for invitation via <a href="mailto:&#65;&#110;&#x74;&#x43;&#104;&#x61;&#x69;&#110;&#x4f;&#x70;&#x65;&#110;&#76;&#x61;&#x62;&#115;&#x40;&#x61;&#110;&#116;&#x67;&#114;&#x6f;&#x75;&#x70;&#46;&#99;&#x6f;&#109;">&#65;&#110;&#x74;&#x43;&#104;&#x61;&#x69;&#110;&#x4f;&#x70;&#x65;&#110;&#76;&#x61;&#x62;&#115;&#x40;&#x61;&#110;&#116;&#x67;&#114;&#x6f;&#x75;&#x70;&#46;&#99;&#x6f;&#109;</a>. Thank you for your interests! </p>
+<h2 id="About-Workshop"><a href="#About-Workshop" class="headerlink" title="About Workshop"></a>About Workshop</h2><p>Zero Knowledge Proof (ZKP), as the core of the ZK-Rollup scaling scheme, has been developed rapidly recently and provides an effective path to solve blockchain scaling problems. The proof protocols represented by Marlin and Plonk continue to achieve breakthroughs in performance and ease-of-use, making ZKP practical and leading to commercialized solutions at the virtual machine level such as zkEVM and zkWASM. Hardware acceleration schemes for ZK proofs and ZKP-friendly cryptographic components have also provided a further boost to the commercialization of ZK-Rollup.</p>
+<p>The purpose of this workshop is to invite researchers, practitioners, and entrepreneurs to share the latest advances in the industry, and to discuss the current state of the art, challenges, and open issues in using ZKP in blockchain and Web3 applications. </p>
+<h2 id="Agenda"><a href="#Agenda" class="headerlink" title="Agenda"></a>Agenda</h2><div class="center">
+
+<table>
+<thead>
+<tr>
+<th align="center"><center>Time</center></th>
+<th align="center"><center>Title of Presentation</center></th>
+<th align="center"><center>Speaker</center></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">09:30-09:35</td>
+<td align="center">Opening remarks</td>
+<td align="center">Ying Yan <br> Director, AntChain Open Labs</td>
+</tr>
+<tr>
+<td align="center">09:35-09:50</td>
+<td align="center">Build with zkWASM</td>
+<td align="center">Sinka Gao <br> Founder &amp; CEO, Delphinus Labs</td>
+</tr>
+<tr>
+<td align="center">09:50-10:05</td>
+<td align="center">zkEVM architecture and development</td>
+<td align="center">Zhuo Zhang <br> Tech Leader of zkEVM, Scroll</td>
+</tr>
+<tr>
+<td align="center">10:05-10:20</td>
+<td align="center">Sigma protocol from verifiable secret sharing and its application</td>
+<td align="center">Yu Chen <br> Professor, Shandong University</td>
+</tr>
+<tr>
+<td align="center">10:20-10:35</td>
+<td align="center">How to construct modern SNARKs?</td>
+<td align="center">Yuncong Hu <br> Assistant Professor, SJTU</td>
+</tr>
+<tr>
+<td align="center">10:35-10:50</td>
+<td align="center">zkGo: Compiling Go program to ZK friendly WASM code</td>
+<td align="center">Qi Zhou <br> Founder, EthStorage</td>
+</tr>
+<tr>
+<td align="center">10:50-11:05</td>
+<td align="center">zkMove: A type-safe ZK virtual machine</td>
+<td align="center">Greg Zhu <br> Co-founder &amp; CEO, zkMove</td>
+</tr>
+<tr>
+<td align="center">11:05-11:20</td>
+<td align="center">ZKP hardware acceleration</td>
+<td align="center">Guiming Wu <br> Research Scientist, AntChain Open Labs</td>
+</tr>
+<tr>
+<td align="center">11:20-12:00</td>
+<td align="center">Panel discussion on “Future of ZK framework and application”</td>
+<td align="center">Host: Changzheng Wei, AntChain Open Labs <br> Hui Zhang, CEO, ZAN <br> Sinka Gao, CEO, Delphinus Labs <br> Qi Zhou, Founder, EthStorage <br> Kevin Yang, Co-Founder, Artela</td>
+</tr>
+</tbody></table>
+</div>
+Thanks to all the collaborators of this event, ZAN, Delphinus Labs, Scroll and Shanghai Jiao Tong University.
+
+<h2 id="About"><a href="#About" class="headerlink" title="About"></a>About</h2><h3 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs"></a><strong>AntChain Open Labs</strong></h3><p>AntChain Open Labs is a research center initiated by AntChain and world leading computer scientists in the area of foundational trust technologies. It is dedicated to building a secure, transparent and reliable Web3 infrastructure driven by innovative research and aiming to advance transformative services.<br>Website：<a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a><br>Email：<a href="mailto:&#x41;&#110;&#x74;&#67;&#x68;&#x61;&#105;&#110;&#x4f;&#x70;&#x65;&#x6e;&#x4c;&#97;&#x62;&#115;&#x40;&#97;&#110;&#116;&#x67;&#114;&#111;&#x75;&#x70;&#x2e;&#x63;&#x6f;&#109;">&#x41;&#110;&#x74;&#67;&#x68;&#x61;&#105;&#110;&#x4f;&#x70;&#x65;&#x6e;&#x4c;&#97;&#x62;&#115;&#x40;&#97;&#110;&#116;&#x67;&#114;&#111;&#x75;&#x70;&#x2e;&#x63;&#x6f;&#109;</a></p>
+<h3 id="ZAN"><a href="#ZAN" class="headerlink" title="ZAN"></a><strong>ZAN</strong></h3><p>ZAN, powered by AntChain Open Labs, provides solutions for Web3, such as Smart Contract Review, KYT, KYC, Node Service, and more.<br>Website：<a href="https://zan.top/home" target="_blank" rel="noopener">https://zan.top/home</a></p>
 
 
                 <hr>
@@ -263,12 +269,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2023/10/09/The-Anatomy-of-a-Crypto-Heist-Dissecting-The-Attack-on-Stars-Arena/" data-toggle="tooltip" data-placement="top" title="The Anatomy of a Crypto Heist: Dissecting The Attack on Stars Arena">&larr; Previous Post</a>
+                            <a href="/2023/11/13/Web3-Tech-Event-Workshop-on-ZK-VM-Gains-Tremendous-Popularity/" data-toggle="tooltip" data-placement="top" title="Web3 Tech Event - Workshop on ZK VM Gains Tremendous Popularity">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2023/09/25/Linear-Finance-攻击事件分析/" data-toggle="tooltip" data-placement="top" title="Linear Finance 攻击事件分析">Next Post &rarr;</a>
+                            <a href="/2023/10/27/AntChain-Selected-for-the-First-Time-to-Participate-in-the-Prestigious-International-Conference-SOSP/" data-toggle="tooltip" data-placement="top" title="Our Paper on Asynchronous BFT Consensus Presented in SOSP 2023">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
