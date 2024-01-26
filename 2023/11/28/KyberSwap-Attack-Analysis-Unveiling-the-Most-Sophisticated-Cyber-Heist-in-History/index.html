@@ -96,14 +96,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -290,7 +290,7 @@
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">computeSwapStep</span>(<span class="params"></span></span><br><span class="line"><span class="params">  uint256 liquidity,</span></span><br><span class="line"><span class="params">  uint160 currentSqrtP,</span></span><br><span class="line"><span class="params">  uint160 targetSqrtP,</span></span><br><span class="line"><span class="params">  uint256 feeInFeeUnits,</span></span><br><span class="line"><span class="params">  int256 specifiedAmount,</span></span><br><span class="line"><span class="params">  bool isExactInput,</span></span><br><span class="line"><span class="params">  bool isToken0</span></span><br><span class="line"><span class="params"></span>)</span><br><span class="line">  internal</span><br><span class="line">  pure</span><br><span class="line">  returns (</span><br><span class="line">    int256 usedAmount,</span><br><span class="line">    int256 returnedAmount,</span><br><span class="line">    uint256 deltaL,</span><br><span class="line">    uint160 nextSqrtP</span><br><span class="line">  )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// in the event currentSqrtP == targetSqrtP because of tick movements, return</span></span><br><span class="line">  <span class="comment">// eg. swapped up tick where specified price limit is on an initialised tick</span></span><br><span class="line">  <span class="comment">// then swapping down tick will cause next tick to be the same as the current tick</span></span><br><span class="line">  <span class="keyword">if</span> (currentSqrtP == targetSqrtP) <span class="keyword">return</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, currentSqrtP);</span><br><span class="line">  usedAmount = <span class="title function_">calcReachAmount</span>(</span><br><span class="line">    liquidity,</span><br><span class="line">    currentSqrtP,</span><br><span class="line">    targetSqrtP,</span><br><span class="line">    feeInFeeUnits,</span><br><span class="line">    isExactInput,</span><br><span class="line">    isToken0</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (</span><br><span class="line">    (isExactInput &amp;&amp; usedAmount &gt; specifiedAmount) ||</span><br><span class="line">    (!isExactInput &amp;&amp; usedAmount &lt;= specifiedAmount)</span><br><span class="line">  ) &#123;</span><br><span class="line">    usedAmount = specifiedAmount;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    nextSqrtP = targetSqrtP;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  uint256 absDelta = usedAmount &gt;= <span class="number">0</span> ? <span class="title function_">uint256</span>(usedAmount) : usedAmount.<span class="title function_">revToUint256</span>();</span><br><span class="line">  <span class="keyword">if</span> (nextSqrtP == <span class="number">0</span>) &#123;</span><br><span class="line">    deltaL = <span class="title function_">estimateIncrementalLiquidity</span>(</span><br><span class="line">      absDelta,</span><br><span class="line">      liquidity,</span><br><span class="line">      currentSqrtP,</span><br><span class="line">      feeInFeeUnits,</span><br><span class="line">      isExactInput,</span><br><span class="line">      isToken0</span><br><span class="line">    );</span><br><span class="line">    nextSqrtP = <span class="title function_">calcFinalPrice</span>(absDelta, liquidity, deltaL, currentSqrtP, isExactInput, isToken0)</span><br><span class="line">    .<span class="title function_">toUint160</span>();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    deltaL = <span class="title function_">calcIncrementalLiquidity</span>(</span><br><span class="line">      absDelta,</span><br><span class="line">      liquidity,</span><br><span class="line">      currentSqrtP,</span><br><span class="line">      nextSqrtP,</span><br><span class="line">      isExactInput,</span><br><span class="line">      isToken0</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  returnedAmount = <span class="title function_">calcReturnedAmount</span>(</span><br><span class="line">    liquidity,</span><br><span class="line">    currentSqrtP,</span><br><span class="line">    nextSqrtP,</span><br><span class="line">    deltaL,</span><br><span class="line">    isExactInput,</span><br><span class="line">    isToken0</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Continuing to track the attacker’s call trace, we indeed found that, as we suspected, the <code>_updatePoolData</code> function updated the incorrect pool state, setting both the pool’s <code>currentTick</code> and <code>nextTick</code> to 111310.</p>
-<h1 id="Funds-Flow-Track"><a href="#Funds-Flow-Track" class="headerlink" title="Funds Flow Track"></a>Funds Flow Track</h1><p>We used the ZAN KYT tool to track the flow of funds from the attacker’s address: <a href="https://zan.top/kyt/controller/transaction/?entity=0x50275e0b7261559ce1644014d4b78d4aa63be836&ecosystem=ethereum" target="_blank" rel="noopener">https://zan.top/kyt/controller/transaction/?entity=0x50275e0b7261559ce1644014d4b78d4aa63be836&amp;ecosystem=ethereum</a>.</p>
+<h1 id="Funds-Flow-Track"><a href="#Funds-Flow-Track" class="headerlink" title="Funds Flow Track"></a>Funds Flow Track</h1><p>We used the ZAN KYT tool to track the flow of funds from the attacker’s address: <a href="https://zan.top/kyt/controller/transaction/?entity=0x50275e0b7261559ce1644014d4b78d4aa63be836&amp;ecosystem=ethereum" target="_blank" rel="noopener">https://zan.top/kyt/controller/transaction/?entity=0x50275e0b7261559ce1644014d4b78d4aa63be836&amp;ecosystem=ethereum</a>.</p>
 <ol>
 <li>0x50275e0b7261559ce1644014d4b78d4aa63be836<br>This is the address that the attacker used on Ethereum.</li>
 </ol>
@@ -309,7 +309,7 @@
 <p>On the BASE chain, the address kept the profits of 61,051 USDC and 124.22 WETH at the address. The USDC was exchanged for WETH, and no further actions have been taken.</p>
 <p>On the Avalanche network, the address has retained 293.08 WAVAX and 17,316.03 USDC, with no further actions at this time.</p>
 <p>On the Arbitrum network, the address profited from assets like 826,528 DAI and 13 WBTC, with most of the assets remaining in that address. Of these, 500 WETH was transferred to 0x98d69d3ea5f7e03098400a5bedfbe49f2b0b88d3, and 1,000 WETH was sent to the Indexed Finance attacker’s address (0x84e66f86c28502c0fc8613e1d9cbbed806f7adb4).</p>
-<h1 id="Conclusion-Recommendation"><a href="#Conclusion-Recommendation" class="headerlink" title="Conclusion &amp; Recommendation"></a>Conclusion &amp; Recommendation</h1><p>With the rise of UniswapV3, an increasing number of projects are beginning to embrace the emerging ‘concentrated liquidity’ market-making algorithm. Concentrated liquidity offers higher capital efficiency and lower trading slippage compared to the previous constant product and constant sum market-making algorithms. However, the complexity of the concentrated liquidity algorithm is significantly greater. Additionally, there are various imitations that claim ‘innovations’ and ‘improvements’ on star projects, with issues often hidden within the code that are incredibly subtle and difficult to detect. We recommend that all projects undergo thorough testing before launching and seek advice and services from professional contract audit experts.</p>
+<h1 id="Conclusion-amp-Recommendation"><a href="#Conclusion-amp-Recommendation" class="headerlink" title="Conclusion &amp; Recommendation"></a>Conclusion &amp; Recommendation</h1><p>With the rise of UniswapV3, an increasing number of projects are beginning to embrace the emerging ‘concentrated liquidity’ market-making algorithm. Concentrated liquidity offers higher capital efficiency and lower trading slippage compared to the previous constant product and constant sum market-making algorithms. However, the complexity of the concentrated liquidity algorithm is significantly greater. Additionally, there are various imitations that claim ‘innovations’ and ‘improvements’ on star projects, with issues often hidden within the code that are incredibly subtle and difficult to detect. We recommend that all projects undergo thorough testing before launching and seek advice and services from professional contract audit experts.</p>
 <h1 id="About"><a href="#About" class="headerlink" title="About"></a>About</h1><h2 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs"></a><strong>AntChain Open Labs</strong></h2><p>AntChain Open Labs is a research center initiated by AntChain and world leading computer scientists in the area of foundational trust technologies. It is dedicated to building a secure, transparent and reliable Web3 infrastructure driven by innovative research and aiming to advance transformative services.<br>Website：<a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a></p>
 <h2 id="ZAN"><a href="#ZAN" class="headerlink" title="ZAN"></a><strong>ZAN</strong></h2><p>ZAN, powered by AntChain Open Labs, provides solutions for Web3, such as Smart Contract Review, KYT, KYC, Node Service, and more.<br>Website：<a href="https://zan.top/home" target="_blank" rel="noopener">https://zan.top/home</a></p>
 
@@ -319,6 +319,10 @@
                 
 
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2023/12/08/Emergency-Alert-Analysis-of-OpenZeppelin-Arbitrary-Address-Spoofing-Attack/" data-toggle="tooltip" data-placement="top" title="!! Emergency Alert!! Analysis of OpenZeppelin Arbitrary Address Spoofing Attack">&larr; Previous Post</a>
+                        </li>
                     
                     
                         <li class="next">
@@ -425,7 +429,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; AntChain Open Labs 2023 
+                    Copyright &copy; AntChain Open Labs 2024 
                     <br>
                 </p>
             </div>
@@ -447,6 +451,45 @@
 
 <script src="/js/hux-blog.min.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
 
 
 <!-- async load function -->
@@ -504,6 +547,22 @@
 
 
 <!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
 
 
 

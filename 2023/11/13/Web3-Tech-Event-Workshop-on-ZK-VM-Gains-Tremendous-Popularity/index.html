@@ -96,14 +96,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -218,7 +218,7 @@
 <p>Finally, Wei Changzheng, a research scientist and the Director of Privacy and Security Hardware at AntChain Open Labs, hosted the panel discussion. Dr. Zhang Hui, CEO of ZAN, and Kevin Yang, Co-founder of Artela, joined Sinka Gao and Dr. Qi Zhou to discuss topics such as the innovative directions of ZK technology in the Web3 field, Web3 security, and Web3 infrastructure. They expressed their expectations for the current direction of Web3 development and shared their professional experiences. The discussion generated many interesting and inspirational points, including the trend towards integrated software and hardware infrastructure, decentralized storage and data availability, and the role of application-driven infrastructure in promoting further industry development. Regarding the challenges of ZK circuit security, the panelists expressed expectations for breakthroughs in relevant theories and technologies and hoped that more industry experts would work together to advance the construction of ZK circuit security theory and tools.</p>
 <p>In recent years, the applications of general zero-knowledge proof technology for blockchain has rapidly evolved, giving rise to a series of frameworks and tools. Firstly, various ISA-based ZK VMs have emerged. Secondly, the underlying circuit frameworks have matured, facilitating the construction of various specialized ZK circuits. Thirdly, breakthroughs have been made in hardware acceleration technology for underlying proof protocols, enabling highly efficient proof generation. A comprehensive verifiable computing paradigm around ZK is on the horizon, bringing new development opportunities for distributed applications. Through this workshop, audiences were able to quickly catch the lastest work of leading companies and research teams at the forefront of technology. AntChain Open Labs hopes to bring more exciting insights in upcoming workshops.</p>
 <hr>
-<h3 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs:"></a>AntChain Open Labs:</h3><p>Official Website: <a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a><br>Official Email: <a href="mailto:&#65;&#x6e;&#x74;&#67;&#104;&#97;&#x69;&#110;&#x4f;&#112;&#x65;&#x6e;&#76;&#97;&#x62;&#115;&#64;&#97;&#110;&#116;&#x67;&#x72;&#x6f;&#x75;&#112;&#x2e;&#99;&#x6f;&#109;">&#65;&#x6e;&#x74;&#67;&#104;&#97;&#x69;&#110;&#x4f;&#112;&#x65;&#x6e;&#76;&#97;&#x62;&#115;&#64;&#97;&#110;&#116;&#x67;&#x72;&#x6f;&#x75;&#112;&#x2e;&#99;&#x6f;&#109;</a><br><em>如果您有更多建议，欢迎给我们发邮件！</em><br><em>Feel free to drop us an email for any suggestion and idea.</em></p>
+<h3 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs:"></a>AntChain Open Labs:</h3><p>Official Website: <a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a><br>Official Email: <a href="mailto:&#65;&#x6e;&#116;&#67;&#104;&#97;&#105;&#x6e;&#x4f;&#112;&#x65;&#x6e;&#x4c;&#97;&#x62;&#115;&#64;&#97;&#110;&#116;&#103;&#114;&#x6f;&#117;&#x70;&#46;&#x63;&#111;&#x6d;">&#65;&#x6e;&#116;&#67;&#104;&#97;&#105;&#x6e;&#x4f;&#112;&#x65;&#x6e;&#x4c;&#97;&#x62;&#115;&#64;&#97;&#110;&#116;&#103;&#114;&#x6f;&#117;&#x70;&#46;&#x63;&#111;&#x6d;</a><br><em>如果您有更多建议，欢迎给我们发邮件！</em><br><em>Feel free to drop us an email for any suggestion and idea.</em></p>
 
 
                 <hr>
@@ -336,7 +336,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; AntChain Open Labs 2023 
+                    Copyright &copy; AntChain Open Labs 2024 
                     <br>
                 </p>
             </div>
@@ -358,6 +358,45 @@
 
 <script src="/js/hux-blog.min.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
 
 
 <!-- async load function -->
@@ -415,6 +454,22 @@
 
 
 <!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
 
 
 

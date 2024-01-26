@@ -96,14 +96,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -240,7 +240,7 @@
 
 
 <p>上图是ETHStorage提供的存储容量和费率对比图，可以看到自建DA层一定是可以提供比以太坊链中单独一笔交易更高的扩容能力和更低的成本，只是社区是否买单是另一回事。（具体的数值仅供参考，笔者认为并不是特别严谨）</p>
-<h3 id="4-2-OnChain-OffChain-DA"><a href="#4-2-OnChain-OffChain-DA" class="headerlink" title="4.2 OnChain &amp; OffChain DA"></a>4.2 OnChain &amp; OffChain DA</h3><p>另一个解决思路是Off-Chain DA，即不将交易原文放到以太坊主网里，退化成Validium解决方案。不过从社区的TVL数据来看，对该模式貌似并不是很买单。</p>
+<h3 id="4-2-OnChain-amp-OffChain-DA"><a href="#4-2-OnChain-amp-OffChain-DA" class="headerlink" title="4.2 OnChain &amp; OffChain DA"></a>4.2 OnChain &amp; OffChain DA</h3><p>另一个解决思路是Off-Chain DA，即不将交易原文放到以太坊主网里，退化成Validium解决方案。不过从社区的TVL数据来看，对该模式貌似并不是很买单。</p>
 <p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/10.png" alt="image"></p>
 <center><i>https://defillama.com/chains</i></center>
 
@@ -256,7 +256,7 @@
 <p>这种方式的劣势很明显，大家愿意将交易放在以太坊中，是因为相信以太坊具有高度的安全性。如果Layer 2出现问题，仍可以通过以太坊的交易来恢复Layer2状态。然而，对于一个新的共识层或数据可用层的基础设施，它暂时还达不到以太坊那样的公信力和认可度。</p>
 <p>当然，共识层模块化也有自身的优势，比如成本更低，MEV空间更大，具体我们将在6.1详细论述。</p>
 <p>综上所述，我们再次审视模块化区块链的问题。目前，计算层扩容仍然是最主流的模块化解决方案，而数据可用层和共识层的模块化也在快速发展阶段。至于结算层，通常会与数据可用层或共识层一同考虑。这是目前以以太坊为基础的模块化区块链生态架构的基本情况。</p>
-<h2 id="六、模块化带来的“共享经济”"><a href="#六、模块化带来的“共享经济”" class="headerlink" title="六、模块化带来的“共享经济”"></a>六、模块化带来的“共享经济”</h2><h3 id="6-1-共享Sequencer-MEV"><a href="#6-1-共享Sequencer-MEV" class="headerlink" title="6.1 共享Sequencer &amp; MEV"></a>6.1 共享Sequencer &amp; MEV</h3><p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/12.png" alt="image"></p>
+<h2 id="六、模块化带来的“共享经济”"><a href="#六、模块化带来的“共享经济”" class="headerlink" title="六、模块化带来的“共享经济”"></a>六、模块化带来的“共享经济”</h2><h3 id="6-1-共享Sequencer-amp-MEV"><a href="#6-1-共享Sequencer-amp-MEV" class="headerlink" title="6.1 共享Sequencer &amp; MEV"></a>6.1 共享Sequencer &amp; MEV</h3><p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/12.png" alt="image"></p>
 <center><i>https://hackmd.io/@EspressoSystems/EspressoSequencer</i></center>
 <center>Espresso Sequencer Network</center>
 
@@ -267,7 +267,7 @@
 <center><i>https://writings.flashbots.net/the-future-of-mev-is-suave/</i></center>
 
 <p>以FlashBots为例，其发起的SUAVE链期望可以对包括以太坊、ZK Rollup、OP Rollup等所有以太坊生态进行排序，以Intent的方式完成MEV的竞拍。又由于其一旦持有多个链的定序权，甚至可以实现“类跨链MEV”的效果，以获取比单条链更高的收益。</p>
-<h3 id="6-2-DA-Restaking"><a href="#6-2-DA-Restaking" class="headerlink" title="6.2 DA &amp; Restaking"></a>6.2 DA &amp; Restaking</h3><p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/14.png" alt="image"></p>
+<h3 id="6-2-DA-amp-Restaking"><a href="#6-2-DA-amp-Restaking" class="headerlink" title="6.2 DA &amp; Restaking"></a>6.2 DA &amp; Restaking</h3><p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/14.png" alt="image"></p>
 <center><i>https://medium.com/iosg-ventures/eigenlayer-bringing-ethereum-level-trust-to-middleware-c5c426bc8c33</i></center>
 
 <p>常规意义上的DA会提供低价、高效的数据存储方式，甚至提供可编程的能力（比如ETHStorage）。但为了让安全性更高、生态激励模型更健康，一些DA解决方会考虑用利益“软性捆绑”以太坊验证者节点，将以太坊生态的安全性与DA生态之间形成一个弱绑定关系。</p>
@@ -277,7 +277,7 @@
 <center><i>https://docs.opside.network/zk-raas</i></center>
 
 <p>ZK Rollup是一个挑战期更短，未来更可期的Rollup解决方案，但是其要求项目方具有更多的计算资源以及更专业的加速设备和算法实现。所以一些硬件加速的平台想到提供共享的硬件和ZKP生成能力，以一种PoW的模型提供ZKP加速能力。虽然在当前的ZK Rollup生态中，该模式还未完全得到接受，但是从StarkNet的共享Prover以及ZKSync 推出的ZK Stack的趋势来看，未来这不失为一种良性“共享”经济。</p>
-<h3 id="6-4-AppChain-L3"><a href="#6-4-AppChain-L3" class="headerlink" title="6.4 AppChain &amp; L3"></a>6.4 AppChain &amp; L3</h3><p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/16.png" alt="image"></p>
+<h3 id="6-4-AppChain-amp-L3"><a href="#6-4-AppChain-amp-L3" class="headerlink" title="6.4 AppChain &amp; L3"></a>6.4 AppChain &amp; L3</h3><p><img src="/2023/09/22/%E4%BB%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9C%8BWeb3%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/16.png" alt="image"></p>
 <center><i>https://era.zksync.io/docs/reference/concepts/hyperscaling.html</i></center>
 
 <p>笔者认为，提到Rollup，必须要提到AppChain甚至L3的概念，原因有三：</p>
@@ -405,7 +405,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; AntChain Open Labs 2023 
+                    Copyright &copy; AntChain Open Labs 2024 
                     <br>
                 </p>
             </div>
@@ -427,6 +427,45 @@
 
 <script src="/js/hux-blog.min.js"></script>
 
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
 
 
 <!-- async load function -->
@@ -484,6 +523,22 @@
 
 
 <!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
 
 
 
