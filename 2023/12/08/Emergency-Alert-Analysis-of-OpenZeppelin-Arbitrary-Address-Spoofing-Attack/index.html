@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.png">
+
+    <title>
+        
+          !! Emergency Alert!! Analysis of OpenZeppelin Arbitrary Address Spoofing Attack - AntChain Open Labs | Blogs
+        
+    </title>
+
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/12/08/Emergency-Alert-Analysis-of-OpenZeppelin-Arbitrary-Address-Spoofing-Attack/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://openlabs-intl.antdigital.com/home">AntChain Open Labs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Attack Analysis" title="Attack Analysis">Attack Analysis</a>
+                        
+                    </div>
+                    <h1>!! Emergency Alert!! Analysis of OpenZeppelin Arbitrary Address Spoofing Attack</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by AntChain Open Labs on
+                        2023-12-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>On December 8, 2023, OpenZeppelin issued an important security alert to the community via Twitter, stating that the integration of the ERC-2771 standard with a multicall-like method (wherein the code contains a delegatecall to the contract itself with calldata that can be externally controlled by users) could lead to projects using this pattern being at risk of arbitrary address spoofing attacks. (<a href="https://twitter.com/openzeppelin/status/1732913331265036475?s=46&amp;t=zDQbmeyWt2t9a8SGpOvbtw" target="_blank" rel="noopener">https://twitter.com/openzeppelin/status/1732913331265036475?s=46&amp;t=zDQbmeyWt2t9a8SGpOvbtw</a>)</p>
+<p>OpenZeppelin provided methods for identifying vulnerable contracts and mitigating the issue on their blog. For more details, please read the blog post: <a href="https://blog.openzeppelin.com/arbitrary-address-spoofing-vulnerability-erc2771context-multicall-public-disclosure" target="_blank" rel="noopener">https://blog.openzeppelin.com/arbitrary-address-spoofing-vulnerability-erc2771context-multicall-public-disclosure</a>.</p>
+<p><img src="/2023/12/08/Emergency-Alert-Analysis-of-OpenZeppelin-Arbitrary-Address-Spoofing-Attack/01.png" alt="image"></p>
+<h1 id="Attack-Analysis"><a href="#Attack-Analysis" class="headerlink" title="Attack Analysis"></a>Attack Analysis</h1><p>From OpenZeppelin’s blog, it is evident that several attacks have already occurred. Here we will select one transaction for detailed analysis.</p>
+<h2 id="Addresses-involved-in-the-attack"><a href="#Addresses-involved-in-the-attack" class="headerlink" title="Addresses involved in the attack"></a>Addresses involved in the attack</h2><p>Attack transaction:</p>
+<blockquote>
+<p><a href="https://etherscan.io/tx/0xecdd111a60debfadc6533de30fb7f55dc5ceed01dfadd30e4a7ebdb416d2f6b6" target="_blank" rel="noopener">https://etherscan.io/tx/0xecdd111a60debfadc6533de30fb7f55dc5ceed01dfadd30e4a7ebdb416d2f6b6</a></p>
+</blockquote>
+<p>Attacker address:</p>
+<blockquote>
+<p>0xfde0d1575ed8e06fbf36256bcdfa1f359281455a</p>
+</blockquote>
+<p>Attack contract:</p>
+<blockquote>
+<p>0x6980a47bee930a4584b09ee79ebe46484fbdbdd0</p>
+</blockquote>
+<p>TIME token (Vulnerable contract):</p>
+<blockquote>
+<p>0x4b0e9a7da8bab813efae92a6651019b8bd6c0a29</p>
+</blockquote>
+<h2 id="Attack-Process"><a href="#Attack-Process" class="headerlink" title="Attack Process"></a>Attack Process</h2><h3 id="Attack-preparation"><a href="#Attack-preparation" class="headerlink" title="Attack preparation"></a>Attack preparation</h3><ol>
+<li><p>The attacker approved the Uniswap V2 Router contract to use his TIME tokens.</p>
+</li>
+<li><p>The attacker deposited 5 ether into WETH contract and received 5 WETH.</p>
+</li>
+</ol>
+<h3 id="Attack-execution"><a href="#Attack-execution" class="headerlink" title="Attack execution"></a>Attack execution</h3><ol>
+<li><p>The attacker called the <code>swapExactTokensForTokensSupportingFeeOnTransferTokens</code> function of the Uniswap V2 Router contract, intending to exchange 5 WETH for TIME token. This swap was conducted in the Uniswap V2: TIME 40 pool and finnally the attacker exchanged for 3455399346.269046 TIME tokens.</p>
+</li>
+<li><p>The attacker called the <code>execute</code> function of the Forwarder contract, specifying the <code>to</code> address as the TIME contract address  and <code>data</code> in the parameter <code>req</code>. Another parameter, <code>signature</code>, was a signature made by the address 0xa16a5f37774309710711a8b4e83b068306b21724 (another address of the attacker), and <code>req.from</code> was also this address, so the signature verification of the <code>execute</code> function could pass smoothly. Next, the function of the TIME contract will be called with the calldata consisting of <code>req.data</code> and <code>req.from</code>. It’s important to note that the calldata was carefully constructed by the attacker and included the address of the Uniswap V2: TIME 40 pool. This pool address was where the funds were lost in the subsequent attack.</p>
+</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">struct <span class="title class_">ForwardRequest</span> &#123;</span><br><span class="line">    address <span class="keyword">from</span>;</span><br><span class="line">    address to;</span><br><span class="line">    uint256 value;</span><br><span class="line">    uint256 gas;</span><br><span class="line">    uint256 nonce;</span><br><span class="line">    bytes data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">execute</span>(<span class="params">ForwardRequest calldata req, bytes calldata signature</span>)</span><br><span class="line"><span class="keyword">public</span></span><br><span class="line">payable</span><br><span class="line">returns (bool, bytes memory)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">require</span>(<span class="title function_">verify</span>(req, signature), <span class="string">&quot;MinimalForwarder: signature does not match request&quot;</span>);</span><br><span class="line">  _nonces[req.<span class="property">from</span>] = req.<span class="property">nonce</span> + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// solhint-disable-next-line avoid-low-level-calls</span></span><br><span class="line">  (bool success, bytes memory result) = req.<span class="property">to</span>.<span class="property">call</span>&#123; <span class="attr">gas</span>: req.<span class="property">gas</span>, <span class="attr">value</span>: req.<span class="property">value</span> &#125;(</span><br><span class="line">    abi.<span class="title function_">encodePacked</span>(req.<span class="property">data</span>, req.<span class="property">from</span>)</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    <span class="comment">// Next 5 lines from https://ethereum.stackexchange.com/a/83577</span></span><br><span class="line">    <span class="keyword">if</span> (result.<span class="property">length</span> &lt; <span class="number">68</span>) <span class="title function_">revert</span>(<span class="string">&quot;Transaction reverted silently&quot;</span>);</span><br><span class="line">    assembly &#123;</span><br><span class="line">      result := <span class="title function_">add</span>(result, <span class="number">0x04</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">revert</span>(abi.<span class="title function_">decode</span>(result, (<span class="built_in">string</span>)));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Check gas: https://ronan.eth.link/blog/ethereum-gas-dangers/</span></span><br><span class="line">  <span class="title function_">assert</span>(<span class="title function_">gasleft</span>() &gt; req.<span class="property">gas</span> / <span class="number">63</span>);</span><br><span class="line">  <span class="keyword">return</span> (success, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Observing the transaction, we can see that the function being called at this point is the <code>multicall</code> function of the TIME contract. Within the <code>multicall</code> function, a <code>delegatecall</code> is made to execute a function within the current contract (TIME). In this transaction, the <code>burn</code> function of the TIME contract was called.</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">multicall</span>(<span class="params">bytes[] calldata data</span>) external virtual returns (bytes[] memory results) &#123;</span><br><span class="line">    results = <span class="keyword">new</span> bytes[](data.<span class="property">length</span>);</span><br><span class="line">    <span class="keyword">for</span> (uint256 i = <span class="number">0</span>; i &lt; data.<span class="property">length</span>; i++) &#123;</span><br><span class="line">        results[i] = <span class="title function_">_functionDelegateCall</span>(<span class="title function_">address</span>(<span class="variable language_">this</span>), data[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> results;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">_functionDelegateCall</span>(<span class="params">address target, bytes memory data</span>) <span class="keyword">private</span> returns (bytes memory) &#123;</span><br><span class="line">    <span class="built_in">require</span>(<span class="title class_">AddressUpgradeable</span>.<span class="title function_">isContract</span>(target), <span class="string">&quot;Address: delegate call to non-contract&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// solhint-disable-next-line avoid-low-level-calls</span></span><br><span class="line">    (bool success, bytes memory returndata) = target.<span class="title function_">delegatecall</span>(data);</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">AddressUpgradeable</span>.<span class="title function_">verifyCallResult</span>(success, returndata, <span class="string">&quot;Address: low-level delegate call failed&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>When the <code>burn</code> function is called, the address for the token to be burned is determined via the <code>_msgSender</code> function. Upon entering the <code>_msgSender</code> function, in this transaction, the <code>msg.sender</code> is the Forwarder contract, which is a forwarder trusted by the TIME contract, and therefore <code>isTrustedForwarder</code> is true. An address is extracted from the last 20 bytes of the calldata to serve as the sender. The calldata at this point is as follows. The last 20 bytes of the calldata here correspond exactly to the address of the Uniswap V2: TIME 40 pool. Ultimately, 62227259510 TIME tokens from the Uniswap V2: TIME 40 pool were burned.</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">burn</span>(<span class="params">uint256 amount</span>) <span class="keyword">public</span> virtual &#123;</span><br><span class="line">    <span class="title function_">_burn</span>(<span class="title function_">_msgSender</span>(), amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">_msgSender</span>(<span class="params"></span>) internal view virtual <span class="keyword">override</span> returns (address sender) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isTrustedForwarder</span>(msg.<span class="property">sender</span>)) &#123;</span><br><span class="line">        <span class="comment">// The assembly code is more direct than the Solidity version using `abi.decode`.</span></span><br><span class="line">        assembly &#123;</span><br><span class="line">            sender := <span class="title function_">shr</span>(<span class="number">96</span>, <span class="title function_">calldataload</span>(<span class="title function_">sub</span>(<span class="title function_">calldatasize</span>(), <span class="number">20</span>)))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">super</span>.<span class="title function_">_msgSender</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x42966c680000000000000000000000000000000000000000c9112ec16d958e8da8180000760dc1e043d99394a10605b2fa08f123d60faf84</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>The attacker called the <code>sync</code> function of the Uniswap V2: TIME 40 pool, updating the reserves of tokens to match the actual number of tokens in the pool. After the update, the reserve of TIME tokens in the pool decreased, making the price of TIME in the pool more expensive.</p>
+</li>
+<li><p>The attacker conducted another exchange in the Uniswap V2: TIME 40 pool, this time swapping TIME tokens for WETH. As the price of TIME tokens had increased, the attacker was able to exchange for a larger amount of WETH. Ultimately, using the 3455399346.269046 TIME acquired from the first exchange, the attacker swapped for approximately 94 WETH, making a profit of over 80 ETH.</p>
+</li>
+</ol>
+<h1 id="Recommendation"><a href="#Recommendation" class="headerlink" title="Recommendation"></a>Recommendation</h1><p>It is recommended that all project teams promptly utilize OpenZeppelin’s tools (<a href="https://defender.openzeppelin.com/v2/#/auth/sign-up" target="_blank" rel="noopener">https://defender.openzeppelin.com/v2/#/auth/sign-up</a>) to check if their contracts are vulnerable to the aforementioned exploit and take immediate actions such as pausing the project and revoking trust from forwarders , etc., to mitigate this risk.</p>
+<h1 id="About"><a href="#About" class="headerlink" title="About"></a>About</h1><h2 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs"></a><strong>AntChain Open Labs</strong></h2><p>AntChain Open Labs is a research center initiated by AntChain and world leading computer scientists in the area of foundational trust technologies. It is dedicated to building a secure, transparent and reliable Web3 infrastructure driven by innovative research and aiming to advance transformative services.<br>Website：<a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a>  </p>
+<h2 id="ZAN"><a href="#ZAN" class="headerlink" title="ZAN"></a><strong>ZAN</strong></h2><p>ZAN, powered by AntChain Open Labs, provides solutions for Web3, such as Smart Contract Review, KYT, KYC, Node Service, and more.<br><a href="https://zan.top/home" target="_blank" rel="noopener">Website</a> | <a href="https://t.me/ZANTeam" target="_blank" rel="noopener">Telegram</a> | <a href="http://discord.gg/KucRCH9Mcb" target="_blank" rel="noopener">Discocd</a> |  <a href="https://x.com/zan_team" target="_blank" rel="noopener">Twitter</a> | <a href="https://linktr.ee/zan_team" target="_blank" rel="noopener">More</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2024/01/02/Introducing-Smart-Intermediate-Representation-An-Open-Sourced-Compiler-Framework-for-Smart-Contract/" data-toggle="tooltip" data-placement="top" title="Introducing 'Smart Intermediate Representation' -- An Open Sourced Compiler Framework for Smart Contract">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/" data-toggle="tooltip" data-placement="top" title="KyberSwap Attack Analysis: Unveiling the Most Sophisticated Cyber Heist in History">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/AntChainOpenLabs">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; AntChain Open Labs 2024 
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://antchainopenlabs.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7F0NSTH00H"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7F0NSTH00H');
+    </script>
+
+<!-- 
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script> -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

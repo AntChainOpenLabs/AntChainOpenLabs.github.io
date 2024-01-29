@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.png">
+
+    <title>
+        
+          Web3 Tech Event - Workshop on ZK VM Gains Tremendous Popularity - AntChain Open Labs | Blogs
+        
+    </title>
+
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2023/11/13/Web3-Tech-Event-Workshop-on-ZK-VM-Gains-Tremendous-Popularity/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://openlabs-intl.antdigital.com/home">AntChain Open Labs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Web3" title="Web3">Web3</a>
+                        
+                          <a class="tag" href="/tags/#Workshop" title="Workshop">Workshop</a>
+                        
+                          <a class="tag" href="/tags/#ZK-Virtual Machine" title="ZK-Virtual Machine">ZK-Virtual Machine</a>
+                        
+                    </div>
+                    <h1>Web3 Tech Event - Workshop on ZK VM Gains Tremendous Popularity</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by AntChain Open Labs on
+                        2023-11-13
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>2023年11月10日，由蚂蚁链AntChain Open Labs发起的ZK Virtual Machine闭门研讨会成功召开。本次研讨会邀请了Delphinus Labs创始人 &amp; CEO Sinka Gao， Scroll zkEVM技术负责人Zhuo Zhang，山东大学Yu Chen教授，上海交大Yuncong Hu教授，EthStorage创始人Qi Zhou，zkMove联合创始人 &amp; CEO Greg Zhu，AntChain Open Labs研究科学家Guiming Wu、ZAN CEO Hui Zhang和Artela联合创始人Kevin Yang等在零知识证明领域有影响力的创业企业和学者，全面分享了对当前零知识证明技术以及ZK VM技术和应用的现状和未来思考。</p>
+<p>作为一次聚焦垂直技术领域的闭门研讨会，本次活动受到了业界同仁的广泛关注。原定2个半小时的议程延长到了3个半小时，有200多人观看了线上直播，平均观看时长接近两小时，超出了主办方的预期。</p>
+<p>AntChain Open Labs主任闫莺博士进行开场致辞。她介绍了实验室愿景及本次研讨会发起的初衷，希望通过本次研讨会聚集对零知识证明设计及其在区块链和Web3中的应用感兴趣的学术界和工业界的研究者、从业人员和企业家，分享零知识证明的最新发展，讨论当前在各种区块链应用中部署零知识证明的现状，挑战和公开问题。她也透露本次研讨会是web3技术系列研讨会技术的开端，后续将围绕行业关注的技术领域（如存储等）邀请更多专家学者交流研讨。</p>
+<p>会议上，Sinka Gao介绍了发起zkWasm项目的初衷，他们在Web2和Web3的应用间搭建了技术桥梁，将ZKP技术用于WebAssembly虚拟机生态中，为DApp创新提供了重要的基础设施。Zhuo Zhang分享了Scroll团队在zkEVM架构设计和实现上的思考和成果，详细的阐述了zkEVM设计的原理，特别是工程化落地过程中面临的实际挑战给同行带来非常多有益的经验和启发。</p>
+<p>接下来，Yu Chen教授分享了团队在Sigma零知识证明协议上的最新成果。Sigma协议是一种非常高效和优雅的零知识证明协议，但由于其定制化设计的要求非常高，对使用者提出了非常高的要求。他的团队提供了一种能够泛化的算法协议，充分发挥Sigma协议在数域证明上的优势，结合面向通用算术电路的零知识证明协议来构建更加高效的零知识证明系统。</p>
+<p>上海交大Yuncong Hu教授作为Marlin算法的发明人，系统性阐述了zkSNARK体系的理论框架，清晰的勾勒出了zkSNARK算法的设计思路。对于zkSNARK的技术爱好者来说一个难得的提纲挈领的分享。他还分享了以Marlin为基础搭建的零知识证明开发平台arkworks，该平台被工业界和学术界广泛使用。</p>
+<p>Qi Zhou分享了EthStorage团队扩展Go语言在ZK VM生态中的工作。Go语言在Web3领域有非常广泛的应用基础，Go语言理论上也能够编译到Wasm的IR上来，可以应用zkWasm实现零知识证明的应用。但实际的工程上还是有非常多的挑战，特别是Go的运行时非常大，给直接在zkWasm上的构建应用带来了很多困难和负担，zkGo的提出正是应对这些问题，已取得阶段性进展。</p>
+<p>Greg Zhu及团队提出面向类型安全语言Move所设计的zkMove虚拟机。Move语言具备非常好的安全特性，安全是web3领域应用非常重要的考量。zkMove是针对Move语言设计的零知识证明虚拟机，继承了语言的安全特性并解决复杂数据结构的挑战。</p>
+<p>蚂蚁链Guiming Wu总结了当前ZK硬件加速的原理和现状，并进一步分享了蚂蚁链研究团队在这个领域的最新成果。通过创新的硬件架构设计，对于ZKP硬件加速的核心部件MSM（多标量点乘）进行了优化和加速，将这项工作的性能相对当前最新的公开研究成果提升了接近2倍。</p>
+<p>最后，AntChain Open Labs研究科学家、蚂蚁链隐私安全和硬件技术总监魏长征主持了圆桌讨论，ZAN CEO 张辉博士和Artela联合创始人Kevin Yang也加入进来与Sinka Gao和Qi Zhou博士一起就ZK技术在Web3领域创新方向，Web3安全技术和基础设施建设等话题展开了讨论，并表达了对当前Web3发展方向的期待，分享了自己的从业经验。过程中碰撞出了非常多有意思的观点的和想法，包括对基础设施从软硬件一体化趋势、去中心化存储和数据可用性方向，以及通过应用构建基础设施推动产业应用进一步发展的思考。围绕着ZK电路安全的挑战，嘉宾们提出了对相关理论和技术突破的期待，希望更多的业界专家一起携手推进ZK电路安全理论和工具的建设。</p>
+<p>近年来通用零知识证明技术与区块链结合取得快速发展，形成了一系列框架和工具。一是多种ISA的ZK VM相继涌现，二是底层电路框架成熟，便于构建各类专用zk电路，三是针对底层证明协议的硬件加速技术取得突破，实现了高性能证明生成。一个以ZK为核心的全面可验证的计算范式即将到来，分布式应用迎来了新的发展机遇。通过本次研讨会让大家快速的了解到了当前处于技术最前沿的公司和研究团队的一些工作。AntChain Open Labs希望在接下来的主题研讨会中，给大家带来更多精彩的分享。</p>
+<hr>
+<p>On November 10, 2023, the online workshop on ZK Virtual Machine, initiated by AntChain Open Labs, was successfully held. This workshop invited entrepreneurs and researchers with industrial influence in the field of zero-knowledge proof, including Sinka Gao, Founder &amp; CEO of Delphinus Labs; Zhuo Zhang, Technical Lead of Scroll zkEVM; Professor Yu Chen from Shandong University; Professor Yuncong Hu from Shanghai Jiao Tong University; Qi Zhou, Founder of EthStorage; Greg Zhu, Co-founder &amp; CEO of zkMove; Guiming Wu, Research Scientist at AntChain Open Labs; Hui Zhang, CEO of ZAN; and Kevin Yang, Co-founder of Artela. They shared the current status and future trends of zero-knowledge technology and its application in  ZK VM.</p>
+<p>As invitation-only seminar focusing on vertical technological field, this event has garnered wide attention from industrial and academia peers. Originally scheduled for 2.5 hours, the agenda was extended to 3.5 hours, attracting over 200 viewers for the online livestream. The average viewing duration was almost two hours, surpassing the organizer’s expectations.</p>
+<p>Dr. Ying Yan, the Director of AntChain Open Labs, delivered the opening remarks. She introduced the laboratory’s vision and the original intention behind organizing this seminar, aiming to gather researchers, practitioners, and entrepreneurs from academia and industry who are interested in zero-knowledge proof design and its applications in blockchain and Web3. The goal was to share the latest developments in zero-knowledge proofs, and discuss the current deployment status, challenges, and open problems of zero-knowledge proofs in various blockchain applications. She also revealed that this workshop marks the beginning of a series of web3 technology events, and future events will invite more experts and scholars to exchange ideas and discuss technical areas of common industry interest, such as storage.</p>
+<p>At the workshop, Sinka Gao introduced the original intention behind launching the zkWasm project. They built a technical bridge between Web2 and Web3 applications, incorporating ZKP technology into the WebAssembly virtual machine ecosystem. This provides the essential infrastructure for DApp innovation. Zhuo Zhang shared the insights and achievements of the Scroll team in the architecture design and implementation of zkEVM. He elaborated on the principles behind zkEVM design, particularly highlighting the practical challenges encountered during the engineering process, which offered valuable experiences and inspiration for peers in the field.</p>
+<p>Professor Yu Chen then shared the team’s latest work in the Sigma zero-knowledge proof protocol. The Sigma protocol is an extremely efficient and elegant zero-knowledge proof protocol. However, its highly customized design requirements impose significant barriers on users. His team has developed a generalized algorithm protocol that effectively harnesses the advantages of the Sigma protocol in number field proofs. By integrating it with a zero-knowledge proof protocol designed for general arithmetic circuits, they have constructed a more efficient zero-knowledge proof system.</p>
+<p>Professor Yuncong Hu from Shanghai Jiao Tong University, the inventor of the Marlin algorithm, provided a systematic exposition of the theoretical framework of the zkSNARK system. He lucidly outlined the design approach of the zkSNARK algorithm, which was a rare opportunity for enthusiasts of zkSNARK technology. He also presented arkworks, a popular zero-knowledge proof development platform built on the Marlin algorithm.</p>
+<p>Qi Zhou shared the work of the EthStorage team in the extended use of the Go language in the ZK VM ecosystem. Go language has a large number of applications in the Web3 field. In theory, it can be compiled to the IR of Wasm so as to enable the implementation of zero-knowledge proof applications through zkWasm. However, there are still numerous engineering challenges, especially the large size of Go runtime, which poses difficulties and burdens for building applications directly on zkWasm. The introduction of zkGo addresses these issues and has made significant progress in this regard.</p>
+<p>Greg Zhu and his team proposed the zkMove virtual machine designed for the type-safe language Move. Move language possesses excellent security features, which are crucial in Web3 applications. zkMove is a zero-knowledge-proof virtual machine designed specifically for the Move language. It inherits the language’s security features and addresses challenges related to complex data structures.</p>
+<p>Guiming Wu, from AntChain, provided a summary of the principles and current state of ZK hardware acceleration and further shared the latest achievements of the research team in this field. Through innovative hardware architecture design, optimization, and acceleration of the core component MSM (multi-scalar multiplication) for ZKP hardware acceleration, the performance of this work has been improved by nearly 2 times compared to the latest publicly available research results.</p>
+<p>Finally, Wei Changzheng, a research scientist and the Director of Privacy and Security Hardware at AntChain Open Labs, hosted the panel discussion. Dr. Zhang Hui, CEO of ZAN, and Kevin Yang, Co-founder of Artela, joined Sinka Gao and Dr. Qi Zhou to discuss topics such as the innovative directions of ZK technology in the Web3 field, Web3 security, and Web3 infrastructure. They expressed their expectations for the current direction of Web3 development and shared their professional experiences. The discussion generated many interesting and inspirational points, including the trend towards integrated software and hardware infrastructure, decentralized storage and data availability, and the role of application-driven infrastructure in promoting further industry development. Regarding the challenges of ZK circuit security, the panelists expressed expectations for breakthroughs in relevant theories and technologies and hoped that more industry experts would work together to advance the construction of ZK circuit security theory and tools.</p>
+<p>In recent years, the applications of general zero-knowledge proof technology for blockchain has rapidly evolved, giving rise to a series of frameworks and tools. Firstly, various ISA-based ZK VMs have emerged. Secondly, the underlying circuit frameworks have matured, facilitating the construction of various specialized ZK circuits. Thirdly, breakthroughs have been made in hardware acceleration technology for underlying proof protocols, enabling highly efficient proof generation. A comprehensive verifiable computing paradigm around ZK is on the horizon, bringing new development opportunities for distributed applications. Through this workshop, audiences were able to quickly catch the lastest work of leading companies and research teams at the forefront of technology. AntChain Open Labs hopes to bring more exciting insights in upcoming workshops.</p>
+<hr>
+<h3 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs:"></a>AntChain Open Labs:</h3><p>Official Website: <a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a><br>Official Email: <a href="mailto:&#65;&#110;&#116;&#67;&#x68;&#x61;&#105;&#110;&#x4f;&#112;&#x65;&#x6e;&#76;&#x61;&#x62;&#115;&#64;&#97;&#110;&#x74;&#103;&#x72;&#111;&#117;&#112;&#x2e;&#99;&#x6f;&#x6d;">&#65;&#110;&#116;&#67;&#x68;&#x61;&#105;&#110;&#x4f;&#112;&#x65;&#x6e;&#76;&#x61;&#x62;&#115;&#64;&#97;&#110;&#x74;&#103;&#x72;&#111;&#117;&#112;&#x2e;&#99;&#x6f;&#x6d;</a><br><em>如果您有更多建议，欢迎给我们发邮件！</em><br><em>Feel free to drop us an email for any suggestion and idea.</em></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2023/11/28/KyberSwap-Attack-Analysis-Unveiling-the-Most-Sophisticated-Cyber-Heist-in-History/" data-toggle="tooltip" data-placement="top" title="KyberSwap Attack Analysis: Unveiling the Most Sophisticated Cyber Heist in History">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2023/11/02/Workshop-on-ZK-Virtual-Machine/" data-toggle="tooltip" data-placement="top" title="Workshop on ZK-Virtual Machine">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/AntChainOpenLabs">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; AntChain Open Labs 2024 
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://antchainopenlabs.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7F0NSTH00H"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7F0NSTH00H');
+    </script>
+
+<!-- 
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script> -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

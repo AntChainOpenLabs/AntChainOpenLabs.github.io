@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.png">
+
+    <title>
+        
+          Principle and Architecture of zkRollup - AntChain Open Labs | Blogs
+        
+    </title>
+
+    <link rel="canonical" href="https://antchainopenlabs.github.io/2024/01/24/Principle-and-Architecture-of-zkRollup/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://openlabs-intl.antdigital.com/home">AntChain Open Labs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Blockchain Technology" title="Blockchain Technology">Blockchain Technology</a>
+                        
+                    </div>
+                    <h1>Principle and Architecture of zkRollup</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by AntChain Open Labs on
+                        2024-01-24
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="An-Overview-of-Rollup"><a href="#An-Overview-of-Rollup" class="headerlink" title="An Overview of Rollup"></a>An Overview of Rollup</h1><p>Rollup is a category of blockchain Layer 2 scaling solutions. In Rollup schemes, operators of the project run a relatively independent Layer 2 platform underneath the expanded main chain (i.e., Layer 1). Users can execute contracts or transfer tokens on the Layer 2 platform.</p>
+<p>The security of the Layer 2 platform is guaranteed by the Layer 1 blockchain it relies on. When a new block is generated in Layer 2, the transaction information from the Layer 2 block, as well as the post-transaction state root of Layer 2, are bundled as a Rollup transaction and published on the Layer 1 chain. The actual transaction execution and state changes are processed on the Layer 2 platform below the main chain, and Layer 1 only needs to verify the correctness of the state transitions of Layer 2. Since the cost of verifying state transition correctness is much lower than executing these transactions on Layer 1, Layer 2 can achieve an expansion of the Layer 1 platform. The Layer 2 platform can offer higher transaction throughput and lower transaction costs compared to Layer 1 while maintaining equivalent security.</p>
+<p>Compared to other off-chain transaction schemes, Rollups have two characteristics:    </p>
+<ul>
+<li>The availability of state data for the second layer is solved by storing it on the main chain. The Layer 2 platform records all transaction information or complete Layer 2 state changes in blocks on the main chain. Should the Layer 2 state be lost, anyone can recover the missing state from the information stored on the main chain.</li>
+<li>In the Rollup scheme, the Layer 2 state root changes packaged and stored on the main chain need to be verified in some way on the main chain. After verification, the state of Layer 2 will be locked on the Layer 1 main chain. Therefore, under the condition of a secure verification scheme, Layer 2 can enjoy the same level of security as Layer 1.</li>
+</ul>
+<p>Based on the verification methods of Layer 2 state updates by the main chain, there are currently two main types of Rollup technology solutions. One is Optimistic Rollup. In this type of scheme, the main chain contract does not directly verify the new state submitted by Layer 2. Instead, a challenge period is prepared for each new state submitted. Since Rollup submits all transaction information to the main chain and makes it public, anyone can verify the state update (especially when the update involves their own wallet). If the new state is incorrect, a verifier can generate a fraud proof against that erroneous state and submit it within the challenge period, thus invalidating the incorrect state update.</p>
+<p>Another type of Rollup solution is zk Rollup. In this type of scheme, after executing the Layer 2 state update, the operator of Layer 2 must provide a zero-knowledge proof of the correctness of the state update and submit it to the main chain along with the state update. The contract on the main chain will verify the proof to determine the correctness of the state update.</p>
+<p>Compared to the Optimistic Rollup scheme, zk Rollup does not require a lengthy challenge period to finally confirm Layer 2 transactions and can be confirmed more quickly. In addition, zk Rollup does not rely on the assumption that there will always be honest verifiers in the network who will timely submit fraud proofs when fraud occurs. However, at the same time, zk Rollup also faces issues such as the high computational cost of zero-knowledge proof technology, complexity, and difficulty in development, which hinder the practical implementation of zk Rollup technology in Rollups. With the further development of zero-knowledge proof technology in the past two years, these obstacles are gradually being overcome. zk Rollup technology is starting to occupy an increasingly large share of the Layer 2 market.</p>
+<p>As shown in the figure below, within the Rollup layer-2 scaling field, zkRollup already occupies more than half of the territory and is rapidly developing.</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/01.png" alt="image"></p>
+<blockquote>
+<p><a href="https://l2beat.com/scaling/summary" target="_blank" rel="noopener">Image source</a><br>Data retrieved on: January 18, 2024</p>
+</blockquote>
+<h1 id="From-Specialized-zkRollup-to-General-zkRollup"><a href="#From-Specialized-zkRollup-to-General-zkRollup" class="headerlink" title="From Specialized zkRollup to General zkRollup"></a>From Specialized zkRollup to General zkRollup</h1><p>During its development, zkRollup has mainly gone through two stages. The first type is the non-general zkRollup, while the second type is the general zkRollup capable of executing Turing-complete arbitrary contracts.</p>
+<p>The difference between these two types of zkRollup technology mainly lies in whether the Layer 2 platform executes limited specialized logic written by the platform provider or arbitrary smart contract logic written by users in transactions.</p>
+<p>In non-general zkRollup projects (like zkSync Lite, which ranks 8th in the figure above), users can only perform a few types of transaction operations, such as FT (fungible token) transfers, payments, swaps, and NFT (non-fungible token) transfers. The transaction logic for these operations can only be defined and implemented by the project owners.</p>
+<p>Through such zkRollup projects, we can transfer with much lower fees compared to the Ethereum mainnet and obtain higher transaction throughput. However, if we want to try out some interesting contract on the chain, we will not be able to do so.</p>
+<p>Why can’t specialized zkRollups allow users to deploy and use their own smart contracts? This brings us back to the proof architecture of zkRollup itself.</p>
+<p>To ensure that the state transitions of L2 are correct and trustworthy, in zkRollup, all L2 state transition logic needs to be written as zero-knowledge proof circuits and verified by the L1 contracts. Only states that pass verification can be accepted by L1 and ultimately complete the Rollup. This process requires that all transaction execution logic of the zkRollup platform is verified in the zero-knowledge proof circuit. However, supporting the execution of arbitrary contract logic in zero-knowledge proof circuits is a challenge (the reasons for this difficulty will be explained later in the text). As a result, early zkRollup projects often only supported a limited number of relatively simple transactions.</p>
+<p>Being able to execute only a fixed number of simple transactions obviously does not meet our expectations for zkRollup. Fortunately, zkVM (Zero-Knowledge Virtual Machine) technology has solved the difficulty of proving the execution of any arbitrary Turing-complete code within zero-knowledge proof circuits, making the general zkRollup platform a possibility. Next, this article will introduce the implementation principles of zkVM, allowing readers to understand how this most core part of general zkRollup technology operates.</p>
+<h1 id="The-Implementation-Principles-of-zkVM"><a href="#The-Implementation-Principles-of-zkVM" class="headerlink" title="The Implementation Principles of zkVM"></a>The Implementation Principles of zkVM</h1><p>Before introducing the principles of zkVM, we will first provide a brief introduction to zero-knowledge proof technology. Here, we don’t need a detailed understanding of the underlying mathematical principles of zero-knowledge proofs; it’s enough to understand what zero-knowledge proofs can do, how they are used, and the limitations imposed by their specialized proof circuits. </p>
+<h2 id="An-Introduction-to-Zero-Knowledge-Proofs"><a href="#An-Introduction-to-Zero-Knowledge-Proofs" class="headerlink" title="An Introduction to Zero-Knowledge Proofs"></a>An Introduction to Zero-Knowledge Proofs</h2><p>Zero-knowledge proofs in zkRollup serve to prove that Layer 2 transactions have been executed correctly and that the state of Layer 2 has been updated correctly. </p>
+<p>To achieve this purpose, the zkVM circuit needs to prove that any smart contract deployed on Layer 2 has been executed correctly. Before introducing the principles of zkVM, we need to first discuss the role of zero-knowledge proofs and how they work.</p>
+<h3 id="Why-Zero-Knowledge-Proofs-Are-Needed"><a href="#Why-Zero-Knowledge-Proofs-Are-Needed" class="headerlink" title="Why Zero-Knowledge Proofs Are Needed"></a>Why Zero-Knowledge Proofs Are Needed</h3><p>Zero-knowledge proof is a cryptographic primitive that allows a prover to convince a verifier of the correctness of a statement without revealing any additional information to the verifier. </p>
+<p>Zero-knowledge proofs have three core properties:   </p>
+<ul>
+<li>Completeness: If the statement to be proven is true, an honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.</li>
+<li>Soundness: If the statement to be proven is false, a dishonest prover has only a negligible chance of convincing the honest verifier that it is true.</li>
+<li>Zero-knowledge: Besides the statement being true, the verifier cannot obtain any additional information from the verification process.</li>
+</ul>
+<p>With the completeness of zero-knowledge proofs, when the prover completes a complex calculation, they can produce a proof that convinces the verifier that the output data obtained from the input data is the result provided by the executor. The soundness of zero-knowledge proofs ensures that when the executor provides a wrong result, they cannot generate a valid proof. </p>
+<p>Therefore, with the completeness and soundness of zero-knowledge proofs, we can confidently outsource these complex calculations to others and verify through a relatively simple verification process whether the calculation is correct, without needing to trust the outsourced party. </p>
+<p>In addition to the three core properties of zero-knowledge proofs, the widely used zk-SNARK scheme also have the characteristic of succinctness. This means that for any complex logic that is proven using zero-knowledge proofs, the size of the proof generated and the time taken to verify the proof are both fixed and relatively small. This allows the zk-Rollup to offload state update calculations off-chain and only verify the correctness of operations on-chain, making the scaling solution feasible.</p>
+<h3 id="The-Process-of-Zero-Knowledge-Proofs"><a href="#The-Process-of-Zero-Knowledge-Proofs" class="headerlink" title="The Process of Zero-Knowledge Proofs"></a>The Process of Zero-Knowledge Proofs</h3><p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/02.png" alt="image"></p>
+<p>Next, this article will use the simple calculation below as an example to explain the process of zero-knowledge proofs.<br>$c=a^2+b+5$<br>For the sake of explaining the zero-knowledge aspect in zero-knowledge proofs, we will set variables a and c as the public values of this zero-knowledge proof, with b as the secret input known only to the prover. Since our calculation is very simple, the verifier can easily deduce the value of the secret input from the public values. This does not affect the zero-knowledge property of the zero-knowledge proof method itself, as it only guarantees that the verifier cannot obtain information about the secret input from the proof process.</p>
+<p>When proving, the prover first selects a value for a and b respectively as inputs and calculates the value of c. Here, we set a &#x3D; 3, b &#x3D; 2, then c &#x3D; 16. After completing all calculations, the prover can generate a zero-knowledge proof for these values and operations.</p>
+<p>After completing the proof, the prover will give the verifier the public inputs of the proof (i.e., the values of a and c) as well as the zero-knowledge proof.</p>
+<p>Upon receiving the proof, the verifier can, by validating the zero-knowledge proof, be convinced that the prover has used a secret input b, which makes the above formula true when a &#x3D; 3 and c &#x3D; 16 (i.e., the public input values), and is unable to obtain any information beyond the public inputs (a &#x3D; 3, c &#x3D; 16).</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/03.png" alt="image"></p>
+<p>The next part of the article will introduce the specific proof process. When we need to prove a computation using the zero-knowledge proof method, we first need to represent the computation in the form of an arithmetic circuit that the zero-knowledge proof algorithm can accept. Arithmetic circuits are Turing-complete representations of computation. As the name implies, an arithmetic circuit is a computational circuit made up of gates that perform arithmetic operations. In our example, the conversion result is shown in the figure. You may notice that in addition to the public inputs a and c and secret input b we mentioned, there are two additional values, d and e. These are intermediate variables used in the computation process.</p>
+<p>We can think of each wire in the arithmetic circuit as a value, which could be a public input, a secret input, or an intermediate variable. After expanding the computation into an arithmetic circuit, each intermediate variable will have its place and be used in the proof process. The only difference between them and the inputs is that their values are not directly entered by the prover but determined by other input values in the arithmetic circuit. </p>
+<p>We can see the arithmetic circuit as two parts: one part is all the numerical values that appear in the circuit, and the other part is the relationships (constraints) between these values. We usually refer to the public inputs in the circuit as the statement (in our example, a and c), and all other values, including the secret inputs (b) and intermediate variables (d and e), as the witness.</p>
+<p>According to the logic of the circuit, when we have the public inputs as the statement and the secret inputs as the witness, we can calculate all the witness values in the circuit. </p>
+<p>Therefore, the gate circuit of the arithmetic circuit can also be represented in the following form:</p>
+<figure class="highlight plaintext"><figcaption><span>Text</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">statement:</span><br><span class="line">a,c</span><br><span class="line">witness:</span><br><span class="line">b,d,e</span><br><span class="line">constraint:</span><br><span class="line">d = a * a</span><br><span class="line">e = b + 5</span><br><span class="line">c = d + e</span><br></pre></td></tr></table></figure>
+
+<p>After the circuit to be proven is arithmetized, the zero-knowledge proof algorithm needs to process the circuit’s constraints and convert them into the form required by the algorithm for the generation and validation of proofs. After processing, the circuit produces a fixed-length VK (Verification Key) that is unrelated to the size of the circuit. The verifier can verify the zero-knowledge proof of the corresponding circuit through the verification key. The verification key is somewhat similar to a commitment to the circuit. If any changes occur to the constraints, the corresponding verification key will also change.</p>
+<p>In actual applications, users of zero-knowledge proofs need to write the logic they require into zk circuit source code and generate a corresponding VK through auditing. This VK is handed over to the verifier. The public inputs proven by the prover, along with the generated proof, are submitted, and the verifier can verify whether these public inputs meet the constraints. In this example, the prover can generate a proof with the values of a, b, and c. The verifier can verify whether a2 + b equals C without performing this operation.</p>
+<h3 id="Limitations-of-Zero-Knowledge-Proof-Circuits"><a href="#Limitations-of-Zero-Knowledge-Proof-Circuits" class="headerlink" title="Limitations of Zero-Knowledge Proof Circuits"></a>Limitations of Zero-Knowledge Proof Circuits</h3><p>Although zk circuits are Turing-complete and can represent any computation, due to the need to convert computations into the special representation form of arithmetic circuits, there are some additional restrictions in writing arithmetic circuits. </p>
+<p>In computer programs we are more familiar with, we can control the branches of program execution with if-else statements. Only the selected branch in the program is executed. However, in the zero-knowledge proof process, computations are flattened into circuits, and there is no concept of execution paths or control flows. Thus, we cannot choose a particular branch to execute in an arithmetic circuit. </p>
+<p>Of course, this does not mean that we cannot use branches and selections in circuits. It just means that in circuits, all branches, whether selected or not, will be executed and contribute to the production of the proof. The selection of branches only affects which branch’s result will be output to the next variable. </p>
+<p>Take the following operation as an example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (flag) &#123;</span><br><span class="line">	c = x + x</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  c = x * x</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When this operation is converted into an arithmetic circuit, it will be converted into the constraints shown below. Obviously, two new witnesses, temp1 and temp2, will be added to the circuit. In addition, the value of <code>x+x</code> and the value of <code>x*x</code> will both be calculated. </p>
+<p>That is, in a zk circuit, all branches and logic will be computed, whether they are executed or not.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">temp1 = x + x</span><br><span class="line">temp2 = x * x</span><br><span class="line">c = flag * temp1 + (1-flag) * temp2</span><br></pre></td></tr></table></figure>
+
+<p>Because of these limitations, supporting conditional selection in zero-knowledge proof circuits is quite difficult. How to prove the execution path of a smart contract logic with many variations in a zero-knowledge proof is one of the main challenges of a zk virtual machine.</p>
+<h2 id="Proving-the-Execution-of-Any-Program-Proving-a-Universal-State-Machine-in-a-Circuit"><a href="#Proving-the-Execution-of-Any-Program-Proving-a-Universal-State-Machine-in-a-Circuit" class="headerlink" title="Proving the Execution of Any Program - Proving a Universal State Machine in a Circuit"></a>Proving the Execution of Any Program - Proving a Universal State Machine in a Circuit</h2><p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/04.png" alt="image"></p>
+<blockquote>
+<p><a href="https://github.com/0xPolygonHermez/zkevm-doc/blob/main/mkdocs/docs/zkEVM/zkProver/Verifiable-Computations/figures/simple-state-machine-overview-PC.pdf.png" target="_blank" rel="noopener">Image source</a></p>
+</blockquote>
+<p>We describe the VM through a model of a universal state machine. A VM is a state machine that transitions states as instructions are processed. Let’s illustrate how a virtual machine is proven by a zero-knowledge circuit with a very simple state machine example.</p>
+<p>We assume this universal state machine has general-purpose registers (A and B), and additionally, a Program Counter register that stores the current instruction number.</p>
+<p>The state of the registers before executing instruction $i$ is $A^i, B^i$, which, after the execution of instruction $i$, transitions to state $A^{i+1}, B^{i+1}$.</p>
+<p>The figure below shows the basic workflow of a ZK virtual machine proving circuit:</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/05.png" alt="image"></p>
+<p>State 0 can be considered the initial state of this virtual machine before running. The initial state, after a total of m instructions, reaches the final state m. In addition to the initial state, this virtual machine has two regular input tables:   </p>
+<ul>
+<li>Bytecode Table: Stores the program executed in the state machine.</li>
+<li>I&#x2F;O Table: Stores all inputs and outputs generated during the execution of the virtual machine.</li>
+</ul>
+<p>In the figure, the execution process of the nth instruction is abstracted and displayed on the left. The state of the state machine, State n, transitions to State n+1 after the execution of the nth instruction. The same circuit, after m iterations, achieves the execution of m instructions in the vm.</p>
+<p>There are two issues here.</p>
+<p>One is how to execute different instructions within a fixed circuit? When executing contract bytecode, it’s not possible to determine what the nth instruction that is executed is, so the actual circuit logic here cannot be determined.</p>
+<p>The second is how to prove if the number of instructions to be executed is not m?</p>
+<p>For the first question, the solution is to implement the logic for all possible instructions in the circuit. Then use a Selector, based on the instruction, to choose one of them as the next state, similar to the if-else in the specialized circuit mentioned before.</p>
+<p>For the second question, we cannot directly change the number of instructions in the circuit. This is because each instruction in the circuit requires an independent circuit segment to implement. If the number of instructions increases or decreases, the circuit will change, and the corresponding verification key will also change. This makes it impossible to meet the requirements for verifying any logic in a fixed circuit.</p>
+<p>To solve this problem, a noop instruction which won’t change the state can be added to the instruction set. Therefore, there is an upper limit to the number of instructions that each fixed circuit can execute. The zkVM’s circuit can be seen as a container with a fixed number of instruction slots. If more instructions are needed, a larger circuit is required. In actual proof, a circuit of appropriate size can be selected as needed.</p>
+<h3 id="Proving-a-Basic-Instruction"><a href="#Proving-a-Basic-Instruction" class="headerlink" title="Proving a Basic Instruction"></a>Proving a Basic Instruction</h3><p>Here are some basic computational instructions as an example of how the basic instructions in the circuit are proven:</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/06.png" alt="image"></p>
+<blockquote>
+<p><a href="https://github.com/0xPolygonHermez/zkevm-doc/blob/main/mkdocs/docs/zkEVM/zkProver/Verifiable-Computations/figures/simple-state-machine.pdf.png" target="_blank" rel="noopener">Image source</a></p>
+</blockquote>
+<p>The figure shows the flowchart of the instruction proving circuit. The formulas below are the circuit constraints for the proof.</p>
+<p>These two constraints can prove several basic instructions for the general-purpose registers A and B listed in the top right corner. These proofs can load values from the input table or immediate values from the instructions into the registers or add the values in registers A and B and write them back to the registers.</p>
+<p>From this figure, we can see that in order to build constraints for state changes, the circuit introduces some auxiliary control states:</p>
+<p>$selA, selB$ indicate whether to select registers $A, B$ as input</p>
+<p>$inFree$ indicates whether to choose free as input</p>
+<p>$setA, setB$ indicate whether to write the calculation result to registers $A, B$</p>
+<p>The selected inputs and $const$ immediate values will be summed and then input into the output register selected by set.</p>
+<p>When data needs to be read from the free input and written to the A register, $inFree$ and  $setA$ are selected, so the value in free will be written into the A register, thus implementing the instruction to read input into the A register.</p>
+<p>When an addition operation is needed, during the execution of line 3, $selA,selB$ are selected, so the values of registers $A,B$ are summed and then written to the register $A$ selected by $selA$, thus implementing the instruction for addition.</p>
+<p>The computational logic between these auxiliary registers and general-purpose registers is implemented by the formulas below. Interested readers can substitute the corresponding values into the constraint formulas to verify. It can be seen that with these two constraints, basic arithmetic addition instructions can be implemented. If more operations are needed, more instruction constraints will have to be added.</p>
+<p>Returning to the basic process diagram, we can regard the computational circuit in this section as an instruction in the overall process. The Selector will choose whether the result it produces is the next state to be adopted by the state machine. The auxiliary states required by the circuit in this section are generated by the instruction pointed to by the PC register.</p>
+<p>Instruction retrieval is implemented by a specialized lookup circuit, which can prove the retrieval of a segment of data from a fixed table through an index. Therefore, the zkVM circuit can prove the state transition executed by the virtual machine specified by PC.</p>
+<h3 id="Proving-Conditional-Judgments-and-Control-Flow-Jumps"><a href="#Proving-Conditional-Judgments-and-Control-Flow-Jumps" class="headerlink" title="Proving Conditional Judgments and Control Flow Jumps"></a>Proving Conditional Judgments and Control Flow Jumps</h3><p>The state machine’s ability to execute complex logic relies on conditional and jump instructions. In actual contracts, we often need to deal with logic that changes the execution path based on conditions, so such circuits are necessary.</p>
+<p>It should be noted here that zkVM circuits are not modules that actually execute contract logic and calculate results. What zkVM circuits actually do is prove the calculation process of the contract logic. Therefore, when proving, it is necessary to fill the actual executed instruction sequence process in the circuit, verify through the circuit whether the conditions for this jump are met, and then prove that the executed instruction flow has made the correct jump.</p>
+<p>First, we introduce the proof of condition judgment:</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/07.png" alt="image"></p>
+<p>Taking the judgment of whether the operand in the ith instruction equals zero as an example. We add an auxiliary state isZero for the judgment result. If the judged value is 0, then the value of the auxiliary state isZero is 1; if the judged value is any other value besides 0, then isZero is 0.</p>
+<p>This process is constrained by the two formulas in the diagram.</p>
+<p>The validity of this constraint is related to the mathematical properties of the elliptic curves used in zero-knowledge proofs. Every value in a zero-knowledge proof circuit is an element within a finite field on an elliptic curve. If its value is not 0, there must be an inverse element that, when multiplied by itself, results in 1. Using this property, with the two constraints in the diagram, it is possible to verify whether a value is zero and convert it into an auxiliary state.</p>
+<p>Once we have this isZero condition auxiliary state, we can proceed to the proof of conditional jump instructions:</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/08.png" alt="image"></p>
+<p>When executing the jump instruction $\mathtt{JMPZ(addr)}$, the circuit checks whether the value of $\mathtt{isZero}$ is 0; if it is, then the value of $\mathtt{PC}$ is changed to the value specified in the jump instruction. When the jump instruction is not executed, the value of $\mathtt{PC}$ is incremented by 1 each time, allowing the instructions to be executed sequentially. It can be seen that the jump instruction is actually an instruction that modifies the state of $PC$.</p>
+<p>The implementation of this constraint can be achieved with the constraints in the diagram. It can be seen that only when $\mathtt{JMPZ, isZero}$ are both 1 will the value of $\mathtt{PC}$ be set to $\mathtt{addr}$; otherwise, it will only increment by one.</p>
+<p>Returning to the basic process diagram, if the current instruction is a conditional jump instruction. It first carries out an isZero check, determines whether the jumping condition is met, and then modifies the value of PC. After updating the value of PC, the execution of the next instruction first involves a lookup based on PC to find the instruction after the jump.</p>
+<h3 id="I-x2F-O-and-Complex-Operations"><a href="#I-x2F-O-and-Complex-Operations" class="headerlink" title="I&#x2F;O and Complex Operations"></a>I&#x2F;O and Complex Operations</h3><p>When using a general state machine proof circuit, to correctly handle state transitions, it is necessary to add corresponding control states and constraints for each supported instruction during a single state transition. The number of these state values and constraints must also be multiplied by the number of instructions supported by the zkVM. Even if no operations are performed in the actual program executed by the zkVM (all NOPs), these state values and constraint checks cannot be omitted.</p>
+<p>Therefore, using the general state machine circuit in the first half of this article to execute complex calculations is very inefficient. If these methods are used to implement complex calculations, their performance is difficult to accept. In addition, it is difficult for the general state machine circuit to execute complex instructions or interact directly with the outside world.</p>
+<p>To solve this problem, actual implementations of zkVMs typically use a combination of general state machine circuits and specialized proof circuits to prove parts of the program separately and then aggregate the proofs into one solution.</p>
+<p><img src="/2024/01/24/Principle-and-Architecture-of-zkRollup/09.png" alt="image"></p>
+<blockquote>
+<p>Image cource: <a href="https://trapdoortech.medium.com/zero-knowledge-proof-deep-into-zkevm-source-code-evm-circuit-21d0a47f63aa" target="_blank" rel="noopener">1</a> <a href="https://github.com/0xPolygonHermez/zkevm-doc/blob/main/mkdocs/docs/zkEVM/zkProver/State-Machines/Overview/figures/plook-ops-mainSM-copy.png" target="_blank" rel="noopener">2</a></p>
+</blockquote>
+<p>The diagram on the left is the circuit architecture of the Scroll project, and the diagram in the bottom right corner is the circuit architecture of Polygon. They both employ a similar approach as shown in the diagram in the top corner.</p>
+<p>The general state machine is responsible for proving the execution logic control of the program. In most contracts, the actual execution time of this part of the logic is very small, so proving it with the inefficient general state machine is still acceptable in terms of efficiency.</p>
+<p>More fixed complex calculations, such as hash, MPT tree operations, external input data, etc., are proven by specialized circuits.</p>
+<p>The general state machine and specialized proof circuits interact using lookup tables. Every time the state machine circuit calls these operations, the modules that generate the witness for the proof will write the call parameters and calculation results in the lookup table. Thus the calls to these operations in the state machine circuit are simplified to a look up operation.</p>
+<p>The correctness of each call and return value in the lookup table is constrained and proven by a specialized circuit.</p>
+<p>Finally, the copying constraints in the circuit connect the state machine circuit, specialized circuits, and lookup tables, checking whether each item in the lookup table is proven by the corresponding specialized circuit, and ultimately generating a proof for the complete block.</p>
+<p>The L1 contract only needs to verify this aggregate proof to confirm the correctness of the entire virtual machine execution process.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>Zero-knowledge proof technology has made it possible to prove calculations simple and fastly, opening the door to outsourcing computational processes in a trustless environment. This technology, when used in blockchain, liberates execution from the chain, allowing the main blockchain to focus on decentralized and security issues. But the characteristic of specialized zero-knowledge proof circuits to execute only fixed logic limits the potential of zero-knowledge proofs on blockchain, confining the early zkRollup’s capabilities to a few types of transactions.</p>
+<p>However, with the development and maturation of zk virtual machines, supporting Turing-complete execution of arbitrary smart contracts has become possible. The potential of zkRollup will be truly unleashed, realizing its vision of breaking the blockchain trilemma.</p>
+<h1 id="About"><a href="#About" class="headerlink" title="About"></a>About</h1><h2 id="AntChain-Open-Labs"><a href="#AntChain-Open-Labs" class="headerlink" title="AntChain Open Labs"></a><strong>AntChain Open Labs</strong></h2><p>AntChain Open Labs is a research center initiated by AntChain and world leading computer scientists in the area of foundational trust technologies. It is dedicated to building a secure, transparent and reliable Web3 infrastructure driven by innovative research and aiming to advance transformative services.<br>Website：<a href="https://openlabs-intl.antdigital.com/home" target="_blank" rel="noopener">https://openlabs-intl.antdigital.com/home</a>  </p>
+<h2 id="ZAN"><a href="#ZAN" class="headerlink" title="ZAN"></a><strong>ZAN</strong></h2><p>ZAN, powered by AntChain Open Labs, provides solutions for Web3, such as Smart Contract Review, KYT, KYC, Node Service, and more.<br><a href="https://zan.top/home" target="_blank" rel="noopener">Website</a> | <a href="https://t.me/ZANTeam" target="_blank" rel="noopener">Telegram</a> | <a href="http://discord.gg/KucRCH9Mcb" target="_blank" rel="noopener">Discocd</a> |  <a href="https://x.com/zan_team" target="_blank" rel="noopener">Twitter</a> | <a href="https://linktr.ee/zan_team" target="_blank" rel="noopener">More</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2024/01/25/Ethereum-s-Efficient-Verifiable-Query-Technique-Verkle-Trees/" data-toggle="tooltip" data-placement="top" title="The Verge - Ethereum's Efficient Verifiable Query Technique: Verkle Trees">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2024/01/10/An-In-Depth-Analysis-of-Smart-Contract-Forking-in-the-Ethereum-Ecosystem/" data-toggle="tooltip" data-placement="top" title="An In-Depth Analysis of Smart Contract Forking in the Ethereum Ecosystem">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/AntChainOpenLabs">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; AntChain Open Labs 2024 
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true
+      }
+    });
+</script>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$']],
+        processEscapes: true,
+      },
+      options: {
+      renderActions: {
+        findScript: [10, function (doc) {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createTextNode('');
+            node.parentNode.replaceChild(text, node);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '']
+      }
+    }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" src="/js/mathjax/tex-chtml.js">
+</script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://antchainopenlabs.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7F0NSTH00H"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7F0NSTH00H');
+    </script>
+
+<!-- 
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'G-7F0NSTH00H';
+    var _gaDomain = 'https://antchainopenlabs.github.io';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script> -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://antchainopenlabs.github.io/img/logo.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
